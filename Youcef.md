@@ -72,12 +72,12 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, et de 
 flowchart LR
   App[App Mobile]
   API[API REST\nAuth JWT, validation]
-  WS[Temps réel (Chat & Notifications)]
+  WS[Temps réel]
   DB[(MongoDB Atlas)]
   Push[Notifications Push]
   Maps[Localisation & GPS]
   Video[Serveur WebRTC/Zoom API]
-  Files[Stockage fichiers (S3/Drive)]
+  Files[Stockage fichiers]
 
   App -- HTTPS/JSON --> API
   API --- DB
