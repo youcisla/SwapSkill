@@ -35,6 +35,12 @@ Faciliter l’apprentissage accessible et local en mettant en relation des perso
   - Authentification JWT, vérification email, signalement/blocage d’utilisateur.
   - Paramètres de confidentialité (partage de position approximative).
 
+- **Traduction instantanée du chat:** : permet aux utilisateurs parlant différentes langues de communiquer sans barrière.  
+
+- **Mode hors-ligne :** possibilité de consulter son profil, préparer des séances ou revoir l’historique même sans connexion.
+
+- **Mini-vidéos de présentation :** chaque utilisateur peut ajouter une courte vidéo pour se présenter et rendre son profil plus vivant.
+
 ### Utilité
 Encourage le partage de savoirs, l’entraide locale et la montée en compétences continue, avec une barrière d’entrée minimale (pas d’échange d’argent).
 
