@@ -18,13 +18,13 @@
 | Profil utilisateur (bio, photo, localisation approx.) | `M` | 🔴 `P0` |
 | Déclarer “J’enseigne / J’apprends” + niveau + dispo | `M` | 🔴 `P0` |
 | Tags de compétences & langues | `S` | 🔴 `P0` |
-| Mini-vidéo de présentation (≤30s) | `M` | 🟠 `P1` |
+| Mini-vidéo de présentation (≤30s) | `M` | 🟡 `P2` |
 | Upload certificats/diplômes | `M` | 🟠 `P1` |
-| Vérification certificats (manuel) + badge “Certifié” | `M` | 🟠 `P1` |
-| KYC léger identité (badge “Vérifié”) | `M` | 🟠 `P1` |
+| Vérification certificats (manuel) + badge “Certifié” | `M` | 🟡 `P2` |
+| KYC léger identité (badge “Vérifié”) | `M` | 🟡 `P2` |
 | Matching basique (compétences, distance, dispo) | `L` | 🔴 `P0` |
 | Filtres: rayon, niveau, langue, présentiel/distanciel | `M` | 🔴 `P0` |
-| Recherche par mots-clés | `S` | 🟠 `P1` |
+| Recherche par mots-clés | `S` | 🔴 `P0` |
 | Chat 1-1 temps réel (texte) | `M` | 🔴 `P0` |
 | Partage de fichiers (PDF/images) dans le chat | `M` | 🟠 `P1` |
 | Notifications push/email (messages, sessions) | `M` | 🔴 `P0` |
@@ -39,8 +39,8 @@
 | Votes “utile” sur avis | `S` | 🟡 `P2` |
 | Score de fiabilité (no-show/annulation tardive) | `M` | 🟠 `P1` |
 | Gamification: points clés (enseigner, participer, avis) | `M` | 🟠 `P1` |
-| Badge “Certifié” (auto via vérif diplôme) | `S` | 🟠 `P1` |
-| Classement basique (Weekly Top 10) | `M` | 🟡 `P2` |
+| Badge “Certifié” (auto via vérif diplôme) | `S` | 🟡 `P2` |
+| Classement basique (Weekly Top 10) | `M` | 🟠 `P1` |
 | Stats perso simples (sessions, points) | `S` | 🟡 `P2` |
 | Signalement & blocage d’utilisateurs | `S` | 🔴 `P0` |
 | Modération IA simple (toxicité) | `M` | 🟡 `P2` |
@@ -50,9 +50,9 @@
 | Onboarding guidé (tuto + premiers matchs) | `M` | 🟠 `P1` |
 | Admin minimal (modération, vérifs, bans) | `M` | 🔴 `P0` |
 | Rate-limit & sécurité API (Helmet, CORS) | `S` | 🔴 `P0` |
-| Stockage fichiers (S3 compatible) | `M` | 🟠 `P1` |
+| Stockage fichiers  | `M` | 🟠 `P1` |
 | Scan antivirus basique à l’upload | `M` | 🟡 `P2` |
-| Logs & crash reporting (Sentry) | `S` | 🟠 `P1` |
+| Logs & crash reporting  | `S` | 🟠 `P1` |
 | Observabilité minimale (métriques) | `S` | 🟡 `P2` |
 | Groupes collaboratifs simples (création + membres) | `L` | 🟡 `P2` |
 | Forum de groupe (fils basiques) | `L` | 🟡 `P2` |
@@ -62,3 +62,4 @@
 | Breakout rooms / tableau blanc | `L` | ⚪ `P3` |
 | Abonnements/paiements (Premium/VIP) | `XL` | ⚪ `P3` |
 | Mode Écoles/Universités (classes, exports) | `XL` | ⚪ `P3` |
+
