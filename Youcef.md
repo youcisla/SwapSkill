@@ -97,7 +97,7 @@ flowchart LR
   Push[Notifications Push]
   Maps[Localisation & GPS]
   Video[Serveur WebRTC/Zoom API]
-  Files[Stockage fichiers (S3/Drive)]
+  Files[Stockage fichiers]
   AI[IA Agents intégrés]
 
   App -- HTTPS/JSON --> API
