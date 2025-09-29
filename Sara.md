@@ -34,7 +34,7 @@ Faciliter l’apprentissage accessible et local en mettant en relation des perso
 - **Sécurité & Modération :**
   - Authentification JWT, vérification email, signalement/blocage d’utilisateur.
   - Paramètres de confidentialité (partage de position approximative).
-
+- **Fonctionnalités d’amélioration (propositions)** 
 - **Traduction instantanée du chat:** : permet aux utilisateurs parlant différentes langues de communiquer sans barrière.  
 
 - **Mode hors-ligne :** possibilité de consulter son profil, préparer des séances ou revoir l’historique même sans connexion.
