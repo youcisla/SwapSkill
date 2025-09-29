@@ -40,7 +40,9 @@ Faciliter l’apprentissage accessible et local en mettant en relation des perso
 - **Mode hors-ligne :** possibilité de consulter son profil, préparer des séances ou revoir l’historique même sans connexion.
 
 - **Mini-vidéos de présentation :** chaque utilisateur peut ajouter une courte vidéo pour se présenter et rendre son profil plus vivant.
+- **Vérification d’identité avancée :** badge “vérifié” via pièce d’identité (optionnel).
 
+- **Assurance communautaire :** si une session est annulée au dernier moment, l’utilisateur accumule des pénalités dans son score de fiabilité.
 ### Utilité
 Encourage le partage de savoirs, l’entraide locale et la montée en compétences continue, avec une barrière d’entrée minimale (pas d’échange d’argent).
 
