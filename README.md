@@ -135,8 +135,8 @@ erDiagram
     string photoUrl
     number reputation
     number points
-    number reliabilityScore  // fiabilité (annulations, retards)
-    boolean idVerified       // badge vérifié
+    number reliabilityScore
+    boolean idVerified
     string[] roles
     string preferredLang
   }
@@ -166,7 +166,7 @@ erDiagram
     datetime endAt
     string placeOrLink
     enum status "PROPOSED|CONFIRMED|DONE|CANCELLED|NO_SHOW"
-    boolean translatedChat   // traduction activée
+    boolean translatedChat
   }
 
   MESSAGE {
