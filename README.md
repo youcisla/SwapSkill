@@ -27,7 +27,7 @@ Faciliter l’apprentissage accessible et local en mettant en relation des perso
   - Suggestions basées sur les compétences communes, la distance, la disponibilité et la réputation.
   - Filtres (rayon, niveau, langue, mode présentiel/distanciel).
 - **Messagerie & Sessions :**
-  - Chat en temps réel (Socket.io).
+  - Chat en temps réel.
   - Proposition/confirmation de sessions (date, lieu/visio), rappels.
 - **Avis & Réputation :**
   - Notes post-session, commentaires, badges (fiabilité, pédagogie).
@@ -45,12 +45,12 @@ Encourage le partage de savoirs, l’entraide locale et la montée en compétenc
 ### Architecture
 ```mermaid
 flowchart LR
-  App[App Mobile (React Native/Expo)]
-  API[API REST (Node.js/Express)\nAuth JWT, validation]
-  WS[Temps réel (Socket.io)]
+  App[App Mobile]
+  API[API REST\nAuth JWT, validation]
+  WS[Temps réel]
   DB[(MongoDB Atlas)]
-  Push[Notifications (Expo)]
-  Maps[Localisation (Expo Location / Map)]
+  Push[Notifications]
+  Maps[Localisation]
 
   App -- HTTPS/JSON --> API
   API --- DB
@@ -133,9 +133,8 @@ erDiagram
 
 ### Développement
 
-* **Frontend :** React Native (Expo), TypeScript, React Navigation, Redux Toolkit/Zustand, Expo Location, Expo Notifications.
-* **Backend :** Node.js, Express (API REST), Socket.io (chat temps réel), MongoDB (Mongoose), JWT, bcrypt, validation avec Zod/Joi.
-* **Qualité :** ESLint, Prettier, Husky, conventions de commits.
+* **Frontend :** React Native (Expo), TypeScript.
+* **Backend :** Node.js, Express (API REST), Socket.io (chat temps réel), MongoDB (Mongoose), JWT.
 
 ### Test
 
@@ -150,7 +149,7 @@ erDiagram
 * **Backend :** Docker, déploiement sur Railway/Render/Fly.io.
 * **Base :** MongoDB Atlas (sauvegardes, accès sécurisé).
 * **Mobile :** Expo EAS Build (staging/prod), EAS Update (OTA).
-* **Monitoring :** logs (winston/pino), Sentry, UptimeRobot.
+* **Monitoring :** logs, Sentry, UptimeRobot.
 
 ### Maintenance
 
@@ -182,7 +181,7 @@ erDiagram
 
 ## 6. Outils et Protocoles
 
-* **Méthodologie & Gestion :** Agile (Kanban, sprints courts), Git/GitHub (Issues, PR, Projects).
+* **Méthodologie & Gestion :** Agile (Scrum, sprints courts), Git/GitHub (Issues, PR, Projects).
 * **Design :** Figma (maquettes, UI kit), Diagrammes (Mermaid/Draw.io).
 * **Stack technique :** React Native (Expo), Node.js, Express, Socket.io, MongoDB (Mongoose), TypeScript.
 * **Qualité :** ESLint, Prettier, Jest, React Testing Library, Supertest, Detox.
