@@ -425,9 +425,9 @@ flowchart LR
 ### MVP (v1.0)
 
 * **Auth & Users**
- * Données : profil (nom, email, photo, langue, rôles, localisation approx).
- * Structure : **doc Mongo `User`**, index **email (unique)**.
- * Usage : login/JWT, affichage profil, contrôle d’accès.
+ * * Données : profil (nom, email, photo, langue, rôles, localisation approx).
+ * * Structure : **doc Mongo `User`**, index **email (unique)**.
+ * * Usage : login/JWT, affichage profil, contrôle d’accès.
 
 * **Skills & Matching**
  * Données : compétences par user (label, type TEACH/LEARN, niveau, dispo).
