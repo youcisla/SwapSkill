@@ -180,6 +180,13 @@ flowchart LR
   Rev --> Sess
   Notif --> Sess
 ```
+
+## Explication — MVP (v1.0)
+
+1. L’app parle à l’**API Gateway**, qui route vers **Auth, Matching, Chat, Sessions, Reviews, Notifications, Admin**.
+2. Les appels sont **directs** (REST) ; seuls les rappels passent par **Notifications** en **asynchrone**.
+3. **Reviews** vérifie d’abord la **Session** avant d’accepter une note.
+4. Si **Notifications** tombe, la session se crée quand même : les rappels partiront plus tard.
 ---
 
 ### Version 1.1 – Confiance et utilisabilité
@@ -238,6 +245,14 @@ flowchart LR
   Notif --> Sess
 
 ```
+
+
+## Explication — v1.1
+
+1. On ajoute **OAuth/OTP**, **Fichiers**, **Gamification v1**, **Traduction basique**, **Signalement contenu**.
+2. **OAuth** gère la connexion et met à jour le profil côté **Auth**.
+3. **Fichiers** stocke pièces jointes et certificats ; **Chat** y référence les documents.
+4. **Gamification** écoute les **événements** (sessions, avis, messages) et met à jour les points/classements sans bloquer l’usage.
 ---
 
 ### Version 1.2 – Engagement et communauté
@@ -299,6 +314,15 @@ flowchart LR
   Notif --> Sess
   Notif --> Groups
 ```
+
+---
+
+## Explication — v1.2
+
+1. On ajoute **KYC**, **Vidéo profil**, **Mode hors-ligne**, **Groupes & Tâches**, **Gamification v2**, **Modération IA**.
+2. **KYC** pose un badge vérifié dans **Auth** ; **Vidéo profil** passe par **Fichiers**.
+3. **Groupes & Tâches** utilisent **Auth** (rôles) et **Fichiers** (ressources).
+4. **Modération IA** analyse **Chat**/**Groupes** en arrière-plan et signale à **Admin** en cas de problème.
 ---
 
 ### Version 2.0 – Premium et avancé
@@ -369,6 +393,12 @@ flowchart LR
   Notif --> Video
   Notif --> Groups
 ```
+## Explication — v2.0
+
+1. On ajoute **Classe virtuelle**, **Vocal**, **Gamification v3**, **Abonnements**, **Paiements**, **Agents IA**, **Traduction avancée**.
+2. **Classe virtuelle** s’attache à une **Session** ou un **Groupe** ; **Vocal** s’intègre au **Chat**.
+3. **Abonnements** s’appuient sur **Paiements** ; les droits actifs sont stockés côté **Auth**.
+4. **Agents IA** utilisent les données autorisées (profil/sessions) pour aider, sans bloquer le reste de l’app.
 ---
 
 ## 3.2 Bases de Données
