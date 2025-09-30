@@ -2,7 +2,8 @@
 
 ---
 
-![Alt text]('cr7.jpg')
+![App Logo](cr7.png)
+
 
 ## 1. Imaginer une Application
 
