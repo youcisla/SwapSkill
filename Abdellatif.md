@@ -214,9 +214,7 @@ TP2:# SkillSwap — Conception d’Architecture N-Tiers
 
 <img width="2002" height="673" alt="image" src="https://github.com/user-attachments/assets/9a3fd4c2-81cc-41d9-9fe8-64652d668a2b" />
 
-```
 
----
 
 ## 10. Annexes & Glossaire
 - **N-Tiers** : séparation Présentation / Accès / Métier / Données / Analytique.  
@@ -424,6 +422,7 @@ paths:
 
 ### Mon avis (bref)
 Architecture n-tiers propre, prête pour soutenance. Le périmètre est ambitieux mais maîtrisé grâce au BFF, aux événements et à la persistance polyglotte. Commencer petit, instrumenter tôt.
+
 
 
 
