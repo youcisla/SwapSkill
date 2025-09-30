@@ -2,6 +2,8 @@
 
 ---
 
+![Alt text](cr7.png)
+
 ## 1. Imaginer une Application
 
 - **Nom de l'Application :** SkillSwap  
