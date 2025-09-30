@@ -2,15 +2,14 @@
 
 ---
 
-
-## 1. Imaginer une Application
+# 1. Imaginer une Application
 
 - **Nom de l'Application :** SkillSwap  
 - **Type :** Application mobile sociale et collaborative d’échange de compétences (apprendre/enseigner) avec gamification, groupes, IA et classe virtuelle.  
 
 ---
 
-## 2. Décrire l'Application
+# 2. Décrire l'Application
 
 ### Objectif
 Faciliter l’apprentissage accessible, communautaire et motivant en mettant en relation des personnes qui souhaitent **enseigner** ou **apprendre** des compétences.  
@@ -151,6 +150,7 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Notifications**      | Push/email pour rappels sessions.                                                                | Déclenché par Sessions.                             |
 | **Admin & Modération** | Outils minimaux de bannissement et signalements.                                                 | Relié à Users et Reviews.                           |
 
+**Titre du diagramme :** Architecture des microservices – MVP v1.0
 ```mermaid
 flowchart LR
   App[Mobile App] -->|HTTPS/JSON| API[API Gateway]
@@ -199,6 +199,7 @@ flowchart LR
 | **Gamification v1**               | Points de base, classement Top 10.           | Collecte d’événements depuis Sessions, Reviews, Chat. |
 | **Translation Service (basique)** | Traduction du chat.                          | Relié à Chat.                                         |
 
+**Titre du diagramme :** Architecture des microservices – Version 1.1
 ```mermaid
 flowchart LR
   App[Mobile App] --> API[API Gateway]
@@ -266,6 +267,7 @@ flowchart LR
 | **Gamification v2**       | Stats personnelles, badges, votes utiles.             | Améliore Gamification v1.      |
 | **Content Moderation AI** | Détection contenu frauduleux.                         | Relié à Chat et Groups.        |
 
+**Titre du diagramme :** Architecture des microservices – Version 1.2
 ```mermaid
 flowchart LR
   App[Mobile App] --> API[API Gateway]
@@ -337,6 +339,7 @@ flowchart LR
 | **AI Translation avancée** | Traduction illimitée multilingue.                         | Relié à Chat et Groups.                 |
 | **Payments**               | Abonnements, institutions (écoles/universités).           | Relié à Users et Premium Subscriptions. |
 
+**Titre du diagramme :** Architecture des microservices – Version 2.0
 ```mermaid
 flowchart LR
   App[Mobile App] --> API[API Gateway]
@@ -545,6 +548,7 @@ flowchart LR
 
 ## 3.4 Diagramme global (MVP + évolutions)
 
+**Titre du diagramme :** Vue d’ensemble des évolutions microservices
 ```mermaid
 flowchart LR
   App[App Mobile]
@@ -595,6 +599,7 @@ flowchart LR
 
 ### Modèle de données (simplifié)
 
+**Titre du diagramme :** Modèle conceptuel des données principales
 ```mermaid
 erDiagram
   USER ||--o{ SKILL : possede
@@ -796,6 +801,7 @@ erDiagram
 
 #### 7.2.1 Flow Apprenant (MVP)
 
+**Titre du diagramme :** Parcours utilisateur – apprenant v1.0
 ```mermaid
 flowchart TD
   A[Landing / Inscription] --> B[Créer compte + vérif email]
@@ -814,6 +820,7 @@ flowchart TD
 
 #### 7.2.2 Flow Enseignant (MVP)
 
+**Titre du diagramme :** Parcours utilisateur – enseignant v1.0
 ```mermaid
 flowchart TD
   A[Inscription] --> B[Profil: bio, photo, localisation]
@@ -828,6 +835,7 @@ flowchart TD
 
 #### 7.2.3 Flow Admin & Modération (MVP)
 
+**Titre du diagramme :** Processus de modération administrateur – MVP
 ```mermaid
 flowchart TD
   A[Connexion Admin] --> B[Tableau de bord signalements]
@@ -842,6 +850,7 @@ flowchart TD
 
 #### 7.3.1 OAuth + Vérif téléphone + Certificats
 
+**Titre du diagramme :** Renforcement de la confiance – parcours v1.1
 ```mermaid
 flowchart TD
   A[Login] --> B[OAuth Google ou Email+OTP]
@@ -853,6 +862,7 @@ flowchart TD
 
 #### 7.3.2 Chat avec fichiers + Traduction basique
 
+**Titre du diagramme :** Enrichissement du chat – fonctionnalités v1.1
 ```mermaid
 flowchart TD
   A[Chat 1-1] --> B[Attacher fichier]
@@ -863,6 +873,7 @@ flowchart TD
 
 #### 7.3.3 Gamification v1 (points + Top 10)
 
+**Titre du diagramme :** Boucle de gamification – version 1.1
 ```mermaid
 flowchart TD
   A[Événement]
@@ -877,6 +888,7 @@ flowchart TD
 
 #### 7.4.1 KYC léger + Vidéo de présentation
 
+**Titre du diagramme :** Parcours de confiance avancé – version 1.2
 ```mermaid
 flowchart TD
   A[Demande KYC] --> B[Upload pièce identité]
@@ -887,6 +899,7 @@ flowchart TD
 
 #### 7.4.2 Groupes collaboratifs + Tâches
 
+**Titre du diagramme :** Collaboration en groupe – version 1.2
 ```mermaid
 flowchart TD
   A[Créer groupe] --> B[Inviter membres]
@@ -898,6 +911,7 @@ flowchart TD
 
 #### 7.4.3 Mode hors-ligne (profils + historique chat)
 
+**Titre du diagramme :** Expérience hors-ligne – version 1.2
 ```mermaid
 flowchart TD
   A[Connexion lente/offline] --> B[Lire profils mis en cache]
@@ -912,6 +926,7 @@ flowchart TD
 
 #### 7.5.1 Classe virtuelle (WebRTC) + Breakout rooms
 
+**Titre du diagramme :** Déroulé d’une classe virtuelle – version 2.0
 ```mermaid
 flowchart TD
   A[Session Confirmée] --> B[Lancer salle visio]
@@ -922,6 +937,7 @@ flowchart TD
 
 #### 7.5.2 Abonnements & Paiements
 
+**Titre du diagramme :** Cycle de souscription premium – version 2.0
 ```mermaid
 flowchart TD
   A[Choisir Premium/VIP] --> B[Créer abonnement]
@@ -970,6 +986,7 @@ I kept only short one-liners + tiny diagrams.
 
 ##### Mini-flow MVP
 
+**Titre du diagramme :** Interaction apprenant ↔ enseignant – MVP
 ```mermaid
 sequenceDiagram
 actor Learner
@@ -1000,6 +1017,7 @@ Learner->>API: Laisser review
 
 ##### Mini-flow v1.1
 
+**Titre du diagramme :** Chaîne de valeur fonctionnalités – version 1.1
 ```mermaid
 flowchart LR
   U[Utilisateur] -->|Login| O[OAuth/OTP]
@@ -1025,6 +1043,7 @@ flowchart LR
 
 ##### Mini-flow v1.2
 
+**Titre du diagramme :** Orchestration des nouveautés – version 1.2
 ```mermaid
 flowchart TD
   U[Utilisateur] --> KY[KYC léger]
@@ -1050,6 +1069,7 @@ flowchart TD
 
 ##### Mini-flow v2.0
 
+**Titre du diagramme :** Parcours premium et services avancés – version 2.0
 ```mermaid
 sequenceDiagram
 actor User
