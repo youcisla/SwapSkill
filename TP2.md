@@ -2,8 +2,6 @@
 
 ---
 
-![Image]("cr7.jpg")
-
 
 ## 1. Imaginer une Application
 
