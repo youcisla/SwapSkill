@@ -636,6 +636,325 @@ erDiagram
 
 ---
 
+## 7. Profils & User Flows (par version)
+
+### 7.1 Profils cibles
+
+* **Apprenant (Learner)** : cherche à apprendre une compétence.
+* **Enseignant (Teacher)** : propose d’enseigner une compétence.
+* **Dual-mode (Learner↔Teacher)** : alterne les deux rôles.
+* **Admin/Modération** : surveille, modère, gère les signalements.
+* **Établissement (v2.0)** : admin d’une école/université (premium).
+
+---
+
+### 7.2 Flows — MVP (v1.0)
+
+#### 7.2.1 Flow Apprenant (MVP)
+
+```mermaid
+flowchart TD
+  A[Landing / Inscription] --> B[Créer compte + vérif email]
+  B --> C[Créer profil: bio, photo, localisation approx]
+  C --> D[Déclarer compétences à apprendre + disponibilité]
+  D --> E[Exploration: recherche + filtres]
+  E --> F[Voir profil enseignant]
+  F --> G[Chat 1-1]
+  G --> H[Proposer session]
+  H --> I[Confirmation session + rappels]
+  I --> J[Participation à la session]
+  J --> K[Laisser évaluation]
+  K --> L[Signaler utilisateur]
+  L --> M[Notifications et suivi]
+```
+
+#### 7.2.2 Flow Enseignant (MVP)
+
+```mermaid
+flowchart TD
+  A[Inscription] --> B[Profil: bio, photo, localisation]
+  B --> C[Déclarer compétences à enseigner + niveau + dispo]
+  C --> D[Recevoir matches / être trouvé par recherche]
+  D --> E[Chat 1-1]
+  E --> F[Proposer/Accepter session]
+  F --> G[Session réalisée]
+  G --> H[Recevoir évaluation]
+  H --> I[Gestion réputation]
+```
+
+#### 7.2.3 Flow Admin & Modération (MVP)
+
+```mermaid
+flowchart TD
+  A[Connexion Admin] --> B[Tableau de bord signalements]
+  B --> C[Ouvrir profil/utilisateur]
+  C --> D[Actions: avertir, bannir, masquer contenu]
+  D --> E[Suivi des décisions]
+```
+
+---
+
+### 7.3 Flows — v1.1 (Confiance & utilisabilité)
+
+#### 7.3.1 OAuth + Vérif téléphone + Certificats
+
+```mermaid
+flowchart TD
+  A[Login] --> B[OAuth Google ou Email+OTP]
+  B --> C[Ajout téléphone → OTP]
+  C --> D[Upload certificats/diplômes]
+  D --> E[Validation manuelle/basique → Badge Certificat]
+  E --> F[Profil amélioré dans le matching]
+```
+
+#### 7.3.2 Chat avec fichiers + Traduction basique
+
+```mermaid
+flowchart TD
+  A[Chat 1-1] --> B[Attacher fichier]
+  B --> C[Scan rapide / taille max]
+  C --> D[Traduire message (option)]
+  D --> E[Stockage fichier + message traduit]
+```
+
+#### 7.3.3 Gamification v1 (points + Top 10)
+
+```mermaid
+flowchart TD
+  A[Événement]
+   --> B[Attribuer points]
+   --> C[Mettre à jour classement Top 10]
+   --> D[Afficher progression sur profil]
+```
+
+---
+
+### 7.4 Flows — v1.2 (Engagement & communauté)
+
+#### 7.4.1 KYC léger + Vidéo de présentation
+
+```mermaid
+flowchart TD
+  A[Demande KYC] --> B[Upload pièce identité]
+  B --> C[Contrôle basique → Badge Vérifié]
+  C --> D[Upload vidéo ≤30s]
+  D --> E[Stockage + publication sur profil]
+```
+
+#### 7.4.2 Groupes collaboratifs + Tâches
+
+```mermaid
+flowchart TD
+  A[Créer groupe] --> B[Inviter membres]
+  B --> C[Poster ressources / forum]
+  C --> D[Créer tâches]
+  D --> E[Notifs rappels]
+  E --> F[Marquer DONE → stats groupe]
+```
+
+#### 7.4.3 Mode hors-ligne (profils + historique chat)
+
+```mermaid
+flowchart TD
+  A[Connexion lente/offline] --> B[Lire profils mis en cache]
+  B --> C[Lire historique messages local]
+  C --> D[Rédiger brouillons]
+  D --> E[Re-sync auto quand online]
+```
+
+---
+
+### 7.5 Flows — v2.0 (Premium & avancé)
+
+#### 7.5.1 Classe virtuelle (WebRTC) + Breakout rooms
+
+```mermaid
+flowchart TD
+  A[Session Confirmée] --> B[Lancer salle visio]
+  B --> C[Partage écran / tableau blanc]
+  C --> D[Créer breakout rooms]
+  D --> E[Clôture → export résumé/ressources]
+```
+
+#### 7.5.2 Abonnements & Paiements
+
+```mermaid
+flowchart TD
+  A[Choisir Premium/VIP] --> B[Créer abonnement]
+  B --> C[Paiement]
+  C --> D[Activation fonctionnalités premium]
+  D --> E[Renouvellement / Annulation]
+```
+
+---
+
+## 8. Catalogue de Use Cases (par version)
+
+> Format concis par acteur. Chaque UC indique but, déclencheur, préconditions, scénario, alternatives, post-conditions, priorité.
+
+### 8.1 MVP — Use cases principaux
+
+**Apprenant**
+
+1. **UC-L01 Rechercher une compétence**
+
+   * But : trouver un enseignant pertinent.
+   * Déclencheur : ouverture écran Recherche.
+   * Préconditions : profil complété, compétences “à apprendre”.
+   * Scénario (résumé) : saisir mots-clés → filtres → voir listes → ouvrir profil.
+   * Alternatives : aucun résultat → suggestion d’élargir rayon/niveau.
+   * Post-conditions : liste candidats affichée.
+   * Priorité : Haute.
+
+2. **UC-L02 Démarrer un chat**
+
+   * … Scénario : bouton “Contacter” → premier message → notification côté enseignant.
+   * Post-conditions : conversation créée.
+
+3. **UC-L03 Proposer une session**
+
+   * … Scénario : proposer date/lieu (ou distanciel) → envoi → attente confirmation → rappels.
+   * Alt : enseignant refuse/propose autre créneau.
+   * Post : session PROPOSED/CONFIRMED.
+
+4. **UC-L04 Noter une session**
+
+   * … Scénario : après session DONE → formulaire étoiles + critères → soumission.
+   * Post : review enregistrée, notifs.
+
+5. **UC-L05 Signaler un utilisateur**
+
+   * … Scénario : raison + commentaire → envoi à modération.
+   * Post : ticket de signalement créé.
+
+**Enseignant**
+6. **UC-T01 Déclarer compétences à enseigner**
+
+* … Préconditions : profil complété.
+* Scénario : ajouter skill + niveau + dispo → sauvegarder.
+
+7. **UC-T02 Répondre à un message**
+
+   * … Scénario : ouvrir chat → répondre → poursuivre échange.
+
+8. **UC-T03 Accepter/Refuser une session**
+
+   * … Scénario : voir proposition → accepter/refuser → notifs.
+
+9. **UC-T04 Gérer réputation**
+
+   * … Scénario : consulter notes et critères → améliorer profil.
+
+**Admin/Modération**
+10. **UC-A01 Traiter un signalement**
+- … Scénario : ouvrir ticket → vérifier contexte → sanction/archiver.
+- Post : décision journalisée.
+
+11. **UC-A02 Bannir/Restreindre**
+
+    * … Scénario : action sur compte → appliquer durée → informer.
+
+**Tech/Plateforme**
+12. **UC-P01 Notifications**
+- … Scénario : événement (session, message) → envoi push/email.
+13. **UC-P02 RGPD — Export/Suppression compte**
+- … Scénario : demande utilisateur → exporter données / marquer pour suppression.
+
+---
+
+### 8.2 v1.1 — Confiance & utilisabilité
+
+**Identité & Fichiers**
+
+* **UC-ID01 OAuth Login** : se connecter via Google / Email+OTP.
+* **UC-ID02 Vérif téléphone** : envoyer OTP, valider.
+* **UC-DOC01 Upload Certificat** : joindre diplôme → affichage badge “Certificat”.
+* **UC-DOC02 Partage de fichiers en chat** : attacher, prévisualiser, télécharger.
+
+**Qualité & Modération**
+
+* **UC-TR01 Traduction basique chat** : traduire message à la demande.
+* **UC-GAM01 Points & Top 10** : incrémenter points, mettre à jour classement.
+* **UC-REP01 Signaler contenu** : reporter un message ou média.
+
+---
+
+### 8.3 v1.2 — Engagement & communauté
+
+**Confiance**
+
+* **UC-KYC01 Vérification identité** : soumettre pièce → obtenir badge “Vérifié”.
+* **UC-VID01 Vidéo profil** : enregistrer/charger ≤30s → publier.
+
+**Groupes**
+
+* **UC-GRP01 Créer groupe** : nom, description, rôles.
+* **UC-GRP02 Gérer tâches** : créer tâche, assigner, marquer DONE.
+* **UC-GRP03 Forum** : créer sujet, répondre, épingler.
+
+**Hors-ligne**
+
+* **UC-OFF01 Lecture offline** : lire profils/messages du cache.
+* **UC-OFF02 Brouillons** : créer messages/sessions offline → sync à la reconnexion.
+
+**Modération IA**
+
+* **UC-AIM01 Détection contenu** : flag auto pour revue humaine.
+
+---
+
+### 8.4 v2.0 — Premium & avancé
+
+**Temps réel avancé**
+
+* **UC-VIDEOROOM01 Lancer classe virtuelle** : ouvrir salle, gérer audio/vidéo.
+* **UC-VIDEOROOM02 Breakout rooms** : créer, assigner, revenir à la plénière.
+* **UC-VOICE01 Messages vocaux** : enregistrer, envoyer, lire.
+
+**Monétisation**
+
+* **UC-PAY01 Souscrire Premium** : choisir plan, payer, activer.
+* **UC-PAY02 Gérer abonnement** : upgrade/downgrade, annulation, factures.
+
+**IA avancée**
+
+* **UC-AI01 Mentor IA** : proposer parcours, recommandations.
+* **UC-AI02 Copilote Étudiant** : explications ciblées, quiz.
+
+**Établissements**
+
+* **UC-ORG01 Créer espace École** : branding, membres, cours.
+* **UC-ORG02 Exports** : notes, présence, rapports.
+
+---
+
+## 9. Traçabilité Use Cases ↔ Microservices
+
+| Use Cases (exemples)                   | Services clés                                |
+| -------------------------------------- | -------------------------------------------- |
+| UC-L01 Rechercher                      | Skills & Matching, Auth                      |
+| UC-L03 Proposer session                | Sessions, Notifications, Auth                |
+| UC-L04 Noter session                   | Reviews, Sessions, Auth                      |
+| UC-T03 Accepter session                | Sessions, Notifications                      |
+| UC-A01 Traiter signalement             | Admin & Modération, Chat (si contenu), Users |
+| UC-DOC01 Upload certificat (v1.1)      | File Storage, Auth                           |
+| UC-KYC01 Vérif identité (v1.2)         | KYC, Users                                   |
+| UC-GRP02 Gérer tâches (v1.2)           | Groups & Tasks, Files                        |
+| UC-VIDEOROOM01 Classe virtuelle (v2.0) | Virtual Class, Sessions                      |
+| UC-PAY01 Souscrire Premium (v2.0)      | Payments, Premium Subs, Auth                 |
+
+---
+
+## 10. Critères d’acceptation (échantillons MVP)
+
+* **Recherche (UC-L01)** : filtrer par compétence, niveau, langue, rayon; résultats < 1s sur 10k profils; aucun résultat → message d’aide.
+* **Chat (UC-L02)** : première réponse push reçue en < 3s; persistance des messages.
+* **Session (UC-L03)** : statut passe PROPOSED→CONFIRMED; rappels J-1 et H-1.
+* **Évaluation (UC-L04)** : une seule review par session et par utilisateur; modification permise < 24h.
+* **Signalement (UC-L05)** : ticket créé, visibilité admin seulement; SLA tri < 24h.
+
+---
+
 ## Gamification & Ranking
 
 ### Classements
