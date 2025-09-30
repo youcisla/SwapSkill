@@ -207,116 +207,13 @@ TP2:# SkillSwap — Conception d’Architecture N-Tiers
 
 ### 9.1. Vue N-Tiers (C4 “containers”)
 
-```mermaid
-flowchart LR
-  subgraph Client [Tier Présentation]
-    Mobile[App React Native/Expo]
-  end
+<img width="630" height="1031" alt="image" src="https://github.com/user-attachments/assets/324fc5a0-3b41-491c-86b7-6f2499570955" />
 
-  subgraph Access [Tier Accès]
-    BFF[API Gateway / BFF]
-  end
-
-  subgraph Domain [Tier Métier]
-    Auth
-    Profiles
-    Matching
-    Chat
-    Sessions
-    Groups
-    Classroom
-    Gamification
-    Reviews
-    Certificates
-    Notifications
-    Files
-    Payments
-    Analytics
-    Moderation
-    Admin
-    AIReco[AI & Reco]
-  end
-
-  subgraph Data [Tier Données]
-    PG[(PostgreSQL)]
-    MONGO[(MongoDB)]
-    OS[(OpenSearch)]
-    REDIS[(Redis)]
-    S3[(Object Storage)]
-    CH[(ClickHouse)]
-    VEC[(pgvector)]
-    KAFKA[(Kafka)]
-  end
-
-  Mobile --> BFF
-  BFF --> Auth
-  BFF --> Profiles
-  BFF --> Matching
-  BFF --> Chat
-  BFF --> Sessions
-  BFF --> Groups
-  BFF --> Classroom
-  BFF --> Gamification
-  BFF --> Reviews
-  BFF --> Certificates
-  BFF --> Notifications
-  BFF --> Files
-  BFF --> Payments
-  BFF --> Analytics
-  BFF --> Moderation
-  BFF --> Admin
-  BFF --> AIReco
-
-  Auth --> PG
-  Profiles --> PG
-  Sessions --> PG
-  Groups --> PG
-  Reviews --> PG
-  Payments --> PG
-  Certificates --> PG
-  Admin --> PG
-  Moderation --> PG
-
-  Matching --> OS
-  Chat --> MONGO
-  Gamification --> PG
-  Gamification --> REDIS
-  Notifications --> REDIS
-  Files --> S3
-  Analytics --> CH
-  AIReco --> VEC
-
-  Auth --> KAFKA
-  Profiles --> KAFKA
-  Sessions --> KAFKA
-  Chat --> KAFKA
-  Reviews --> KAFKA
-  Gamification --> KAFKA
-  Notifications --> KAFKA
-  Certificates --> KAFKA
-  Payments --> KAFKA
-  Analytics --> KAFKA
-  AIReco --> KAFKA
-```
 
 ### 9.2. Flux d’événements (ex. fin de session)
 
-```mermaid
-sequenceDiagram
-  participant Sessions
-  participant Kafka
-  participant Gamification
-  participant Reviews
-  participant Notifications
-  participant Analytics
+<img width="2002" height="673" alt="image" src="https://github.com/user-attachments/assets/9a3fd4c2-81cc-41d9-9fe8-64652d668a2b" />
 
-  Sessions->>Kafka: SessionCompleted{session_id, tutor_id, learner_id}
-  Kafka-->>Gamification: SessionCompleted
-  Gamification->>Gamification: Calcul points/badges
-  Gamification-->>Kafka: PointsAwarded{user_id, delta}
-  Kafka-->>Notifications: Push/email PointsAwarded
-  Kafka-->>Reviews: Demander évaluation
-  Kafka-->>Analytics: Event ingest
 ```
 
 ---
@@ -527,5 +424,6 @@ paths:
 
 ### Mon avis (bref)
 Architecture n-tiers propre, prête pour soutenance. Le périmètre est ambitieux mais maîtrisé grâce au BFF, aux événements et à la persistance polyglotte. Commencer petit, instrumenter tôt.
+
 
 
