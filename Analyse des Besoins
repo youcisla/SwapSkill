@@ -1,0 +1,46 @@
+Analyse des Besoins
+Objectifs de l’application
+
+Mettre en relation des utilisateurs pour échanger des compétences.
+
+Fournir un espace de communication et de planification de sessions.
+
+Garantir la sécurité et la fiabilité des échanges.
+
+Acteurs
+
+Utilisateur : s’inscrit, crée un profil, propose et recherche des compétences, discute et planifie des sessions.
+
+Administrateur : gère la plateforme, modère les contenus, supervise les utilisateurs.
+
+Système externe (notifications, emails, cloud) : envoi de notifications, stockage de fichiers.
+
+Besoins fonctionnels
+
+Inscription / connexion sécurisée.
+
+Gestion de profil (photo, bio, compétences offertes/recherchées).
+
+Recherche/matching d’utilisateurs.
+
+Messagerie en temps réel.
+
+Planification de sessions (date, lieu ou visio).
+
+Gestion des documents (upload, consultation).
+
+Notation et commentaires après sessions.
+
+Notifications (push, mail).
+
+Outils de modération (côté admin).
+
+Besoins non fonctionnels
+
+Performance : réponse rapide, gestion de forte charge.
+
+Sécurité : authentification JWT, RGPD, données chiffrées.
+
+Accessibilité : mobile-first (React Native), responsive.
+
+Évolutivité : microservices + Kubernetes.
