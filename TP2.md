@@ -420,7 +420,7 @@ flowchart LR
 
 ---
 
-## 3.3 Gestion des Données — Modélisation (résumé concret)
+## 3.3 Gestion des Données — Modélisation
 
 ### MVP (v1.0)
 
