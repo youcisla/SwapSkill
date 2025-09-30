@@ -2,7 +2,7 @@
 
 ---
 
-![Alt text](cr7.png)
+![Alt text]('cr7.jpg')
 
 ## 1. Imaginer une Application
 
