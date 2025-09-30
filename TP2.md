@@ -2,7 +2,7 @@
 
 ---
 
-![App Logo](cr7.png)
+![Image](cr7.png)
 
 
 ## 1. Imaginer une Application
