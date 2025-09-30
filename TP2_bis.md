@@ -197,54 +197,8 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Content Moderation AI** | Détection contenu frauduleux.                         | Relié à Chat et Groups.        |
 
 **Titre du diagramme :** Architecture des microservices – Version 1.2
-```mermaid
-flowchart LR
-  App[Mobile App] --> API[API Gateway]
+<img width="1013" height="1077" alt="image" src="https://github.com/user-attachments/assets/02ef6125-9481-4e4a-98a4-ba66d650b8f8" />
 
-  subgraph Core v1.1
-    Auth[Auth & Users]
-    OAuth[OAuth/Identity]
-    Match[Skills & Matching]
-    Chat[Chat]
-    Sess[Sessions]
-    Rev[Reviews]
-    Notif[Notifications]
-    Admin[Admin & Modération]
-    Files[File Storage]
-    Gam1[Gamification v1]
-    Trans1[Translation]
-    Reports[Content Reporting]
-  end
-
-  subgraph New v1.2
-    KYC[KYC léger]
-    VProf[Video Profiles]
-    Offline[Offline Mode]
-    Groups[Groups & Tasks]
-    Gam2[Gamification v2]
-    AIMod[AI Moderation]
-  end
-
-  API --> KYC
-  API --> VProf
-  API --> Offline
-  API --> Groups
-  API --> Gam2
-  API --> AIMod
-
-  %% Inter-service
-  KYC --> Auth
-  VProf --> Files
-  Groups --> Files
-  Groups --> Auth
-  Gam2 --> Gam1
-  Gam2 --> Sess
-  Gam2 --> Rev
-  AIMod --> Chat
-  AIMod --> Groups
-  Notif --> Sess
-  Notif --> Groups
-```
 
 ---
 
@@ -269,62 +223,8 @@ flowchart LR
 | **Payments**               | Abonnements, institutions (écoles/universités).           | Relié à Users et Premium Subscriptions. |
 
 **Titre du diagramme :** Architecture des microservices – Version 2.0
-```mermaid
-flowchart LR
-  App[Mobile App] --> API[API Gateway]
+<img width="720" height="1030" alt="image" src="https://github.com/user-attachments/assets/d2ead8c0-c288-4c9a-8eb2-96c485d5a6d0" />
 
-  subgraph Core v1.2
-    Auth[Auth & Users]
-    OAuth[OAuth/Identity]
-    Match[Skills & Matching]
-    Chat[Chat]
-    Sess[Sessions]
-    Rev[Reviews]
-    Notif[Notifications]
-    Admin[Admin & Modération]
-    Files[File Storage]
-    Groups[Groups & Tasks]
-    Gam2[Gamification v2]
-    Trans1[Translation]
-    AIMod[AI Moderation]
-  end
-
-  subgraph New v2.0
-    Video[Virtual Class]
-    Voice[Voice Messages]
-    Gam3[Gamification v3]
-    Subs[Premium Subscriptions]
-    Pay[Payments]
-    AIAgents[AI Mentor/Prof/Student]
-    Trans2[AI Translation]
-  end
-
-  API --> Video
-  API --> Voice
-  API --> Gam3
-  API --> Subs
-  API --> Pay
-  API --> AIAgents
-  API --> Trans2
-
-  %% Inter-service
-  Video --> Sess
-  Video --> Groups
-  Voice --> Chat
-  Gam3 --> Gam2
-  Gam3 --> Sess
-  Gam3 --> Rev
-  Subs --> Auth
-  Pay --> Subs
-  Pay --> Auth
-  AIAgents --> Auth
-  AIAgents --> Sess
-  Trans2 --> Chat
-  Trans2 --> Groups
-  Notif --> Sess
-  Notif --> Video
-  Notif --> Groups
-```
 ## Explication — v2.0
 
 1. On ajoute **Classe virtuelle**, **Vocal**, **Gamification v3**, **Abonnements**, **Paiements**, **Agents IA**, **Traduction avancée**.
@@ -478,169 +378,14 @@ flowchart LR
 ## 3.4 Diagramme global (MVP + évolutions)
 
 **Titre du diagramme :** Vue d’ensemble des évolutions microservices
-```mermaid
-flowchart LR
-  App[App Mobile]
-  API[API Gateway]
+<img width="1607" height="697" alt="image" src="https://github.com/user-attachments/assets/9b027b52-c2bc-4e00-bfec-393eb3eeff95" />
 
-  subgraph Core [MVP v1.0]
-    Auth[Auth & Users]
-    Match[Skills & Matching]
-    Chat[Chat texte]
-    Sess[Sessions]
-    Rev[Reviews]
-    Notif[Notifications]
-    Admin[Admin]
-  end
-
-  subgraph V1.1
-    OAuth[OAuth/Identity]
-    Files[File Storage]
-    Gam1[Gamification v1]
-    Trans1[Translation basique]
-  end
-
-  subgraph V1.2
-    Groups[Groups & Tasks]
-    Gam2[Gamification v2]
-    KYC[KYC léger]
-    Offline[Offline Mode]
-    VidProf[Video Profiles]
-    AIMod[AI Moderation]
-  end
-
-  subgraph V2.0
-    Video[Virtual Class]
-    Voice[Voice Messages]
-    Gam3[Gamification v3]
-    Premium[Premium Subs]
-    Pay[Payments]
-    AIAgents[AI Mentor/Prof/Student]
-    Trans2[AI Translation avancée]
-  end
-
-  App --> API
-  API --> Core
-  API --> V1.1
-  API --> V1.2
-  API --> V2.0
-```
 
 ### Modèle de données (simplifié)
 
 **Titre du diagramme :** Modèle conceptuel des données principales
-```mermaid
-erDiagram
-  USER ||--o{ SKILL : possede
-  USER ||--o{ SESSION : participe
-  USER ||--o{ REVIEW : evalue
-  SESSION ||--o{ MESSAGE : contient
-  USER ||--o{ GROUP : membre
-  GROUP ||--o{ TASK : contient
-  USER ||--o{ BADGE : gagne
-  USER ||--o{ RANKING : classe
-  USER ||--o{ MEDIA : publie
+<img width="2312" height="1045" alt="image" src="https://github.com/user-attachments/assets/eb7cbcf6-e8a2-40d4-984c-9587c4e545b4" />
 
-  USER {
-    string _id
-    string name
-    string email
-    string photoUrl
-    number reputation
-    number points
-    number reliabilityScore
-    boolean idVerified
-    string[] roles
-    string preferredLang
-  }
-
-  SKILL {
-    string _id
-    string userId
-    string label
-    enum type "TEACH|LEARN"
-    enum level "BEGINNER|INTERMEDIATE|ADVANCED"
-  }
-
-  MEDIA {
-    string _id
-    string userId
-    enum type "INTRO_VIDEO|DOC|IMAGE|AUDIO"
-    string url
-    number durationSec
-    datetime createdAt
-  }
-
-  SESSION {
-    string _id
-    string userAId
-    string userBId
-    datetime startAt
-    datetime endAt
-    string placeOrLink
-    enum status "PROPOSED|CONFIRMED|DONE|CANCELLED|NO_SHOW"
-    boolean translatedChat
-  }
-
-  MESSAGE {
-    string _id
-    string sessionId
-    string senderId
-    string text
-    string audioUrl
-    string fileUrl
-    string translatedText
-    string lang
-    datetime createdAt
-  }
-
-  GROUP {
-    string _id
-    string name
-    string adminId
-    string[] members
-    string description
-  }
-
-  TASK {
-    string _id
-    string groupId
-    string title
-    string description
-    datetime deadline
-    enum status "TODO|IN_PROGRESS|DONE"
-    string attachmentUrl
-  }
-
-  REVIEW {
-    string _id
-    string sessionId
-    string reviewerId
-    string revieweeId
-    number stars
-    number punctuality
-    number pedagogy
-    number motivation
-    number communication
-    string comment
-    datetime createdAt
-  }
-
-  BADGE {
-    string _id
-    string name
-    string description
-    string icon
-  }
-
-  RANKING {
-    string _id
-    string userId
-    enum timeframe "DAILY|WEEKLY|MONTHLY|YEARLY|ALL_TIME"
-    number score
-    string role "TEACHER|LEARNER"
-  }
-```
 
 ---
 
@@ -731,47 +476,20 @@ erDiagram
 #### 7.2.1 Flow Apprenant (MVP)
 
 **Titre du diagramme :** Parcours utilisateur – apprenant v1.0
-```mermaid
-flowchart TD
-  A[Landing / Inscription] --> B[Créer compte + vérif email]
-  B --> C[Créer profil: bio, photo, localisation approx]
-  C --> D[Déclarer compétences à apprendre + disponibilité]
-  D --> E[Exploration: recherche + filtres]
-  E --> F[Voir profil enseignant]
-  F --> G[Chat 1-1]
-  G --> H[Proposer session]
-  H --> I[Confirmation session + rappels]
-  I --> J[Participation à la session]
-  J --> K[Laisser évaluation]
-  K --> L[Signaler utilisateur]
-  L --> M[Notifications et suivi]
-```
+<img width="292" height="1090" alt="image" src="https://github.com/user-attachments/assets/9ad55eba-680d-43e0-944a-1478bb394439" />
+
 
 #### 7.2.2 Flow Enseignant (MVP)
 
 **Titre du diagramme :** Parcours utilisateur – enseignant v1.0
-```mermaid
-flowchart TD
-  A[Inscription] --> B[Profil: bio, photo, localisation]
-  B --> C[Déclarer compétences à enseigner + niveau + dispo]
-  C --> D[Recevoir matches / être trouvé par recherche]
-  D --> E[Chat 1-1]
-  E --> F[Proposer/Accepter session]
-  F --> G[Session réalisée]
-  G --> H[Recevoir évaluation]
-  H --> I[Gestion réputation]
-```
+<img width="447" height="1087" alt="image" src="https://github.com/user-attachments/assets/2cec5dad-7c27-42cd-8051-eff4d2542c9a" />
+
 
 #### 7.2.3 Flow Admin & Modération (MVP)
 
 **Titre du diagramme :** Processus de modération administrateur – MVP
-```mermaid
-flowchart TD
-  A[Connexion Admin] --> B[Tableau de bord signalements]
-  B --> C[Ouvrir profil/utilisateur]
-  C --> D[Actions: avertir, bannir, masquer contenu]
-  D --> E[Suivi des décisions]
-```
+<img width="655" height="1077" alt="image" src="https://github.com/user-attachments/assets/85b4d292-f958-4420-b501-b058f32baf46" />
+
 
 ---
 
@@ -780,36 +498,20 @@ flowchart TD
 #### 7.3.1 OAuth + Vérif téléphone + Certificats
 
 **Titre du diagramme :** Renforcement de la confiance – parcours v1.1
-```mermaid
-flowchart TD
-  A[Login] --> B[OAuth Google ou Email+OTP]
-  B --> C[Ajout téléphone → OTP]
-  C --> D[Upload certificats/diplômes]
-  D --> E[Validation manuelle/basique → Badge Certificat]
-  E --> F[Profil amélioré dans le matching]
-```
+<img width="587" height="1091" alt="image" src="https://github.com/user-attachments/assets/a45b0ffa-d613-4121-a72e-7812871328e4" />
+
 
 #### 7.3.2 Chat avec fichiers + Traduction basique
 
 **Titre du diagramme :** Enrichissement du chat – fonctionnalités v1.1
-```mermaid
-flowchart TD
-  A[Chat 1-1] --> B[Attacher fichier]
-  B --> C[Scan rapide / taille max]
-  C --> D[Traduire message]
-  D --> E[Stockage fichier + message traduit]
-```
+<img width="627" height="1092" alt="image" src="https://github.com/user-attachments/assets/38b79a29-62b9-48ad-88cd-c7a021012486" />
+
 
 #### 7.3.3 Gamification v1 (points + Top 10)
 
 **Titre du diagramme :** Boucle de gamification – version 1.1
-```mermaid
-flowchart TD
-  A[Événement]
-   --> B[Attribuer points]
-   --> C[Mettre à jour classement Top 10]
-   --> D[Afficher progression sur profil]
-```
+<img width="696" height="1080" alt="image" src="https://github.com/user-attachments/assets/0a23f0cd-c480-4834-a40c-c1b7d41d8d28" />
+
 
 ---
 
@@ -818,36 +520,20 @@ flowchart TD
 #### 7.4.1 KYC léger + Vidéo de présentation
 
 **Titre du diagramme :** Parcours de confiance avancé – version 1.2
-```mermaid
-flowchart TD
-  A[Demande KYC] --> B[Upload pièce identité]
-  B --> C[Contrôle basique → Badge Vérifié]
-  C --> D[Upload vidéo ≤30s]
-  D --> E[Stockage + publication sur profil]
-```
+<img width="583" height="1075" alt="image" src="https://github.com/user-attachments/assets/b00015b8-5b8f-46d2-9107-86ec64da6901" />
+
 
 #### 7.4.2 Groupes collaboratifs + Tâches
 
 **Titre du diagramme :** Collaboration en groupe – version 1.2
-```mermaid
-flowchart TD
-  A[Créer groupe] --> B[Inviter membres]
-  B --> C[Poster ressources / forum]
-  C --> D[Créer tâches]
-  D --> E[Notifs rappels]
-  E --> F[Marquer DONE → stats groupe]
-```
+<img width="496" height="1068" alt="image" src="https://github.com/user-attachments/assets/01201d4c-2b34-401c-a543-1bdc70aad6c3" />
+
 
 #### 7.4.3 Mode hors-ligne (profils + historique chat)
 
 **Titre du diagramme :** Expérience hors-ligne – version 1.2
-```mermaid
-flowchart TD
-  A[Connexion lente/offline] --> B[Lire profils mis en cache]
-  B --> C[Lire historique messages local]
-  C --> D[Rédiger brouillons]
-  D --> E[Re-sync auto quand online]
-```
+<img width="670" height="1067" alt="image" src="https://github.com/user-attachments/assets/777c32c5-de12-47e1-8d2a-740b2b8ca97b" />
+
 
 ---
 
@@ -856,24 +542,14 @@ flowchart TD
 #### 7.5.1 Classe virtuelle (WebRTC) + Breakout rooms
 
 **Titre du diagramme :** Déroulé d’une classe virtuelle – version 2.0
-```mermaid
-flowchart TD
-  A[Session Confirmée] --> B[Lancer salle visio]
-  B --> C[Partage écran / tableau blanc]
-  C --> D[Créer breakout rooms]
-  D --> E[Clôture → export résumé/ressources]
-```
+<img width="697" height="1063" alt="image" src="https://github.com/user-attachments/assets/bbda1731-c22b-4172-ad74-e597a571f18c" />
+
 
 #### 7.5.2 Abonnements & Paiements
 
 **Titre du diagramme :** Cycle de souscription premium – version 2.0
-```mermaid
-flowchart TD
-  A[Choisir Premium/VIP] --> B[Créer abonnement]
-  B --> C[Paiement]
-  C --> D[Activation fonctionnalités premium]
-  D --> E[Renouvellement / Annulation]
-```
+<img width="575" height="1060" alt="image" src="https://github.com/user-attachments/assets/fd9a8d7f-295a-485d-bc5e-ea18a205d065" />
+
 
 ---
 
@@ -916,20 +592,8 @@ I kept only short one-liners + tiny diagrams.
 ##### Mini-flow MVP
 
 **Titre du diagramme :** Interaction apprenant ↔ enseignant – MVP
-```mermaid
-sequenceDiagram
-actor Learner
-actor Teacher
-Learner->>API: Recherche + filtres
-API-->>Learner: Résultats
-Learner->>Teacher: Message (chat)
-Teacher-->>Learner: Réponse
-Learner->>API: Proposer session
-API-->>Teacher: Notification
-Teacher->>API: Confirmer
-API-->>Learner: Rappel auto
-Learner->>API: Laisser review
-```
+<img width="852" height="938" alt="image" src="https://github.com/user-attachments/assets/21c3d9b6-eff8-49f2-86cd-6f8dae935979" />
+
 
 ---
 
@@ -947,15 +611,8 @@ Learner->>API: Laisser review
 ##### Mini-flow v1.1
 
 **Titre du diagramme :** Chaîne de valeur fonctionnalités – version 1.1
-```mermaid
-flowchart LR
-  U[Utilisateur] -->|Login| O[OAuth/OTP]
-  O --> P[Profil]
-  P -->|Upload| C[Certificat]
-  P -->|Chat| F[Pièce jointe]
-  P -->|Bouton| T[Traduire]
-  P -->|Actions| G[Points/Top10]
-```
+<img width="1352" height="787" alt="image" src="https://github.com/user-attachments/assets/a2b80593-8f67-4524-9738-01a6d71429bd" />
+
 
 ---
 
@@ -973,15 +630,8 @@ flowchart LR
 ##### Mini-flow v1.2
 
 **Titre du diagramme :** Orchestration des nouveautés – version 1.2
-```mermaid
-flowchart TD
-  U[Utilisateur] --> KY[KYC léger]
-  U --> VP[Vidéo profil]
-  U --> GRP[Créer groupe]
-  GRP --> T[Ajouter tâches]
-  U --> OFF[Mode hors-ligne]
-  AI[Modération IA] -->|flags| ADM[Admin]
-```
+<img width="1307" height="512" alt="image" src="https://github.com/user-attachments/assets/d711d2c2-8754-4e14-9584-ce02e06e4f5b" />
+
 
 ---
 
@@ -999,17 +649,8 @@ flowchart TD
 ##### Mini-flow v2.0
 
 **Titre du diagramme :** Parcours premium et services avancés – version 2.0
-```mermaid
-sequenceDiagram
-actor User
-User->>API: Choisir Premium
-API->>Payments: Créer paiement
-Payments-->>API: OK (webhook)
-API-->>Auth: Activer droits
-User->>VirtualClass: Rejoindre salle
-VirtualClass-->>User: Audio/vidéo ok
-User->>Chat: Envoyer vocal
-```
+<img width="1202" height="572" alt="image" src="https://github.com/user-attachments/assets/6bf4c7c2-25f8-4092-a171-17ccacf524f7" />
+
 
 ---
 
