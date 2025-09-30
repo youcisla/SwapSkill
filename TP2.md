@@ -818,160 +818,135 @@ flowchart TD
 
 ---
 
-## 8. Catalogue de Use Cases (par version)
-
-> Format concis par acteur. Chaque UC indique but, déclencheur, préconditions, scénario, alternatives, post-conditions, priorité.
-
-### 8.1 MVP — Use cases principaux
-
-**Apprenant**
-
-1. **UC-L01 Rechercher une compétence**
-
-   * But : trouver un enseignant pertinent.
-   * Déclencheur : ouverture écran Recherche.
-   * Préconditions : profil complété, compétences “à apprendre”.
-   * Scénario (résumé) : saisir mots-clés → filtres → voir listes → ouvrir profil.
-   * Alternatives : aucun résultat → suggestion d’élargir rayon/niveau.
-   * Post-conditions : liste candidats affichée.
-   * Priorité : Haute.
-
-2. **UC-L02 Démarrer un chat**
-
-   * … Scénario : bouton “Contacter” → premier message → notification côté enseignant.
-   * Post-conditions : conversation créée.
-
-3. **UC-L03 Proposer une session**
-
-   * … Scénario : proposer date/lieu (ou distanciel) → envoi → attente confirmation → rappels.
-   * Alt : enseignant refuse/propose autre créneau.
-   * Post : session PROPOSED/CONFIRMED.
-
-4. **UC-L04 Noter une session**
-
-   * … Scénario : après session DONE → formulaire étoiles + critères → soumission.
-   * Post : review enregistrée, notifs.
-
-5. **UC-L05 Signaler un utilisateur**
-
-   * … Scénario : raison + commentaire → envoi à modération.
-   * Post : ticket de signalement créé.
-
-**Enseignant**
-6. **UC-T01 Déclarer compétences à enseigner**
-
-* … Préconditions : profil complété.
-* Scénario : ajouter skill + niveau + dispo → sauvegarder.
-
-7. **UC-T02 Répondre à un message**
-
-   * … Scénario : ouvrir chat → répondre → poursuivre échange.
-
-8. **UC-T03 Accepter/Refuser une session**
-
-   * … Scénario : voir proposition → accepter/refuser → notifs.
-
-9. **UC-T04 Gérer réputation**
-
-   * … Scénario : consulter notes et critères → améliorer profil.
-
-**Admin/Modération**
-10. **UC-A01 Traiter un signalement**
-- … Scénario : ouvrir ticket → vérifier contexte → sanction/archiver.
-- Post : décision journalisée.
-
-11. **UC-A02 Bannir/Restreindre**
-
-    * … Scénario : action sur compte → appliquer durée → informer.
-
-**Tech/Plateforme**
-12. **UC-P01 Notifications**
-- … Scénario : événement (session, message) → envoi push/email.
-13. **UC-P02 RGPD — Export/Suppression compte**
-- … Scénario : demande utilisateur → exporter données / marquer pour suppression.
+Gotcha — here’s a **super-simple, paste-ready pack** to replace your current Use Cases.
+I kept only short one-liners + tiny diagrams.
 
 ---
 
-### 8.2 v1.1 — Confiance & utilisabilité
+## 8. Use Cases — Version **simple**
 
-**Identité & Fichiers**
+### 8.1 MVP (v1.0)
 
-* **UC-ID01 OAuth Login** : se connecter via Google / Email+OTP.
-* **UC-ID02 Vérif téléphone** : envoyer OTP, valider.
-* **UC-DOC01 Upload Certificat** : joindre diplôme → affichage badge “Certificat”.
-* **UC-DOC02 Partage de fichiers en chat** : attacher, prévisualiser, télécharger.
+#### Apprenant (Learner)
 
-**Qualité & Modération**
+| ID    | Intention           | Déclencheur → Action         | Résultat                 |
+| ----- | ------------------- | ---------------------------- | ------------------------ |
+| UC-L1 | Créer un compte     | App → S’inscrire (email+pwd) | Compte actif             |
+| UC-L2 | Trouver un prof     | Rechercher + filtres         | Liste pertinente         |
+| UC-L3 | Démarrer un échange | Ouvrir profil → “Contacter”  | Conversation créée       |
+| UC-L4 | Planifier           | “Proposer une session”       | Session **PROPOSED**     |
+| UC-L5 | Être rappelé        | Session confirmée            | Push/email avant session |
+| UC-L6 | Évaluer             | Fin de session → Noter       | Avis enregistré          |
 
-* **UC-TR01 Traduction basique chat** : traduire message à la demande.
-* **UC-GAM01 Points & Top 10** : incrémenter points, mettre à jour classement.
-* **UC-REP01 Signaler contenu** : reporter un message ou média.
+#### Enseignant (Teacher)
 
----
+| ID    | Intention            | Déclencheur → Action                | Résultat                      |
+| ----- | -------------------- | ----------------------------------- | ----------------------------- |
+| UC-T1 | Se présenter         | Compléter profil + skills           | Profil visible                |
+| UC-T2 | Répondre             | Ouvrir chat → répondre              | Conversation active           |
+| UC-T3 | Confirmer            | Voir proposition → accepter/refuser | Session **CONFIRMED** / refus |
+| UC-T4 | Suivre sa réputation | Consulter notes                     | Score visible                 |
 
-### 8.3 v1.2 — Engagement & communauté
+#### Admin
 
-**Confiance**
+| ID    | Intention   | Déclencheur → Action  | Résultat             |
+| ----- | ----------- | --------------------- | -------------------- |
+| UC-A1 | Modérer     | Ouvrir un signalement | Décision journalisée |
+| UC-A2 | Sanctionner | Bloquer/bannir        | Accès restreint      |
 
-* **UC-KYC01 Vérification identité** : soumettre pièce → obtenir badge “Vérifié”.
-* **UC-VID01 Vidéo profil** : enregistrer/charger ≤30s → publier.
+##### Mini-flow MVP
 
-**Groupes**
-
-* **UC-GRP01 Créer groupe** : nom, description, rôles.
-* **UC-GRP02 Gérer tâches** : créer tâche, assigner, marquer DONE.
-* **UC-GRP03 Forum** : créer sujet, répondre, épingler.
-
-**Hors-ligne**
-
-* **UC-OFF01 Lecture offline** : lire profils/messages du cache.
-* **UC-OFF02 Brouillons** : créer messages/sessions offline → sync à la reconnexion.
-
-**Modération IA**
-
-* **UC-AIM01 Détection contenu** : flag auto pour revue humaine.
-
----
-
-### 8.4 v2.0 — Premium & avancé
-
-**Temps réel avancé**
-
-* **UC-VIDEOROOM01 Lancer classe virtuelle** : ouvrir salle, gérer audio/vidéo.
-* **UC-VIDEOROOM02 Breakout rooms** : créer, assigner, revenir à la plénière.
-* **UC-VOICE01 Messages vocaux** : enregistrer, envoyer, lire.
-
-**Monétisation**
-
-* **UC-PAY01 Souscrire Premium** : choisir plan, payer, activer.
-* **UC-PAY02 Gérer abonnement** : upgrade/downgrade, annulation, factures.
-
-**IA avancée**
-
-* **UC-AI01 Mentor IA** : proposer parcours, recommandations.
-* **UC-AI02 Copilote Étudiant** : explications ciblées, quiz.
-
-**Établissements**
-
-* **UC-ORG01 Créer espace École** : branding, membres, cours.
-* **UC-ORG02 Exports** : notes, présence, rapports.
+```mermaid
+sequenceDiagram
+actor Learner
+actor Teacher
+Learner->>API: Recherche + filtres
+API-->>Learner: Résultats
+Learner->>Teacher: Message (chat)
+Teacher-->>Learner: Réponse
+Learner->>API: Proposer session
+API-->>Teacher: Notification
+Teacher->>API: Confirmer
+API-->>Learner: Rappel auto
+Learner->>API: Laisser review
+```
 
 ---
 
-## 9. Traçabilité Use Cases ↔ Microservices
+### 8.2 v1.1 (Confiance & utilisabilité)
 
-| Use Cases (exemples)                   | Services clés                                |
-| -------------------------------------- | -------------------------------------------- |
-| UC-L01 Rechercher                      | Skills & Matching, Auth                      |
-| UC-L03 Proposer session                | Sessions, Notifications, Auth                |
-| UC-L04 Noter session                   | Reviews, Sessions, Auth                      |
-| UC-T03 Accepter session                | Sessions, Notifications                      |
-| UC-A01 Traiter signalement             | Admin & Modération, Chat (si contenu), Users |
-| UC-DOC01 Upload certificat (v1.1)      | File Storage, Auth                           |
-| UC-KYC01 Vérif identité (v1.2)         | KYC, Users                                   |
-| UC-GRP02 Gérer tâches (v1.2)           | Groups & Tasks, Files                        |
-| UC-VIDEOROOM01 Classe virtuelle (v2.0) | Virtual Class, Sessions                      |
-| UC-PAY01 Souscrire Premium (v2.0)      | Payments, Premium Subs, Auth                 |
+| ID       | Intention           | Action brève             | Résultat           |
+| -------- | ------------------- | ------------------------ | ------------------ |
+| UC-ID1   | Login simplifié     | OAuth Google / Email+OTP | Connecté           |
+| UC-ID2   | + Sécurité          | Vérif téléphone (OTP)    | Numéro validé      |
+| UC-DOC1  | Prouver compétences | Upload certificat        | Badge “Certificat” |
+| UC-CHAT1 | Partager fichier    | Pièce jointe dans chat   | Fichier dispo      |
+| UC-TR1   | Comprendre          | Traduire un message      | Texte traduit      |
+| UC-GAM1  | Motiver             | Gagner points            | Top 10 mis à jour  |
+
+##### Mini-flow v1.1
+
+```mermaid
+flowchart LR
+  U[Utilisateur] -->|Login| O[OAuth/OTP]
+  O --> P[Profil]
+  P -->|Upload| C[Certificat]
+  P -->|Chat| F[Pièce jointe]
+  P -->|Bouton| T[Traduire]
+  P -->|Actions| G[Points/Top10]
+```
+
+---
+
+### 8.3 v1.2 (Engagement & communauté)
+
+| ID        | Intention           | Action brève                   | Résultat          |
+| --------- | ------------------- | ------------------------------ | ----------------- |
+| UC-KYC1   | Inspirer confiance  | KYC léger                      | Badge “Vérifié”   |
+| UC-VID1   | Se présenter        | Vidéo ≤30s                     | Vidéo sur profil  |
+| UC-GRP1   | Apprendre en groupe | Créer groupe                   | Espace actif      |
+| UC-TASK1  | Organiser           | Créer tâche + deadline         | Suivi des tâches  |
+| UC-OFF1   | Continuer offline   | Lire cache / rédiger brouillon | Sync auto ensuite |
+| UC-AIMOD1 | Propreté            | Modération IA                  | Contenu flaggé    |
+
+##### Mini-flow v1.2
+
+```mermaid
+flowchart TD
+  U[Utilisateur] --> KY[KYC léger]
+  U --> VP[Vidéo profil]
+  U --> GRP[Créer groupe]
+  GRP --> T[Ajouter tâches]
+  U --> OFF[Mode hors-ligne]
+  AI[Modération IA] -->|flags| ADM[Admin]
+```
+
+---
+
+### 8.4 v2.0 (Premium & avancé)
+
+| ID          | Intention            | Action brève            | Résultat          |
+| ----------- | -------------------- | ----------------------- | ----------------- |
+| UC-VIDROOM1 | Donner cours en live | Ouvrir classe virtuelle | Salle active      |
+| UC-VOICE1   | Échanger en vocal    | Envoyer vocal           | Audio dans chat   |
+| UC-SUB1     | Passer Premium       | Choisir plan + payer    | Avantages activés |
+| UC-PAY1     | Gérer paiement       | Voir/annuler abonnement | Facturation OK    |
+| UC-AI1      | Être guidé           | Lancer Mentor IA        | Recos/quiz        |
+| UC-TR2      | Traduire mieux       | Traduction avancée      | Texte enrichi     |
+
+##### Mini-flow v2.0
+
+```mermaid
+sequenceDiagram
+actor User
+User->>API: Choisir Premium
+API->>Payments: Créer paiement
+Payments-->>API: OK (webhook)
+API-->>Auth: Activer droits
+User->>VirtualClass: Rejoindre salle
+VirtualClass-->>User: Audio/vidéo ok
+User->>Chat: Envoyer vocal
+```
 
 ---
 
