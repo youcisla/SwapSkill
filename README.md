@@ -27,63 +27,110 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 - **Profils & Compétences**
   - Création de profil (bio, photo, localisation approximative).
   - Déclaration “J’enseigne / J’apprends” (compétence, niveau, disponibilité).
-  - **Mini-vidéo de présentation (≤30s)** pour dynamiser le profil.
-  - **Upload de certificats & diplômes** (vérification → points + badge “Certifié”).
-  - **Vérification d’identité avancée** (badge “Vérifié ✅” via pièce d’identité).
+  - Mini-vidéo de présentation (≤30s) pour dynamiser le profil.
+  - Upload de certificats & diplômes (vérification → points + badge “Certifié”).
+  - Vérification d’identité avancée (badge “Vérifié” via pièce d’identité).
 - **Matching intelligent**
-  - Suggestions basées sur les compétences communes, la distance, la disponibilité, la **fiabilité** et la réputation.
+  - Suggestions basées sur les compétences communes, la distance, la disponibilité, la fiabilité et la réputation.
   - Filtres (rayon, niveau, langue, présentiel/distanciel).
 - **Messagerie & Sessions**
-  - Chat en temps réel (1–1 ou groupe) avec **traduction instantanée** (détection auto de langue, affichage bilingue).
-  - **Messages vocaux** + **partage de fichiers** (PDF, images, supports pédagogiques).
+  - Chat en temps réel (1–1 ou groupe) avec traduction instantanée.
+  - Messages vocaux + partage de fichiers (PDF, images, supports pédagogiques).
   - Proposition/confirmation de sessions (date, lieu/visio) + rappels automatiques.
-  - **Mode hors-ligne** : consulter profil, historiques, brouillons de messages/sessions (sync à la reconnexion).
+  - Mode hors-ligne : consulter profil, historiques, brouillons de messages/sessions.
 - **Groupes collaboratifs**
   - Création de groupes par enseignants ou apprenants, rôles (admin, co-admin, membres).
   - Forums, fils de discussion, sondages, partage de ressources.
 - **Classe virtuelle**
-  - **Visioconférences intégrées** (WebRTC/Zoom), partage d’écran, tableau blanc, **breakout rooms**.
+  - Visioconférences intégrées (WebRTC/Zoom), partage d’écran, tableau blanc, breakout rooms.
 - **Partage & organisation**
   - Assignation de tâches et devoirs (deadline, pièces jointes).
   - Sondages et votes collaboratifs.
 - **Ranking & Gamification**
   - Classements enseignants & apprenants (Daily, Weekly, Monthly, Yearly, All Time).
-  - Points pour chaque action (enseigner, participer, publier, aider, **certifier un diplôme**, traductions utiles).
-  - **Badges** (Mentor du mois, Apprenant persévérant, Super organisateur, Polyglotte, Toujours présent, Certifié).
-  - **Score de fiabilité** (assurance communautaire) : pénalités si annulation tardive/no-show, bonus de ponctualité.
+  - Points pour chaque action (enseigner, participer, publier, aider, certifier un diplôme, traductions utiles).
+  - Badges (Mentor du mois, Apprenant persévérant, Super organisateur, Polyglotte, Toujours présent, Certifié).
+  - Score de fiabilité (assurance communautaire) : pénalités si annulation tardive/no-show, bonus de ponctualité.
 - **Évaluations enrichies**
-  - Étoiles **+ critères** : **ponctualité**, **pédagogie**, **motivation/engagement**, **communication**.
+  - Étoiles + critères : ponctualité, pédagogie, motivation/engagement, communication.
   - Avis textuels, votes “utile”.
 - **Statistiques en temps réel**
-  - Graphiques de **diffusion des connaissances** (jour/semaine/mois/année/global).
+  - Graphiques de diffusion des connaissances (jour/semaine/mois/année/global).
   - Indicateurs : sessions, tâches terminées, points cumulés, certificats validés, taux de fiabilité.
 - **Personnalisation & Communauté**
   - Suggestions de groupes/pairs selon l’historique.
-  - Section **“Proposer une fonctionnalité”** (soumissions + votes).
+  - Section “Proposer une fonctionnalité” (soumissions + votes).
   - Notifications personnalisées (push/email).
 - **Éducation formelle**
-  - **Mode Écoles/Universités** : classes, enseignants, cours, devoirs, barèmes, export notes.
+  - Mode Écoles/Universités : classes, enseignants, cours, devoirs, barèmes, export notes.
   - Tableau de bord admin établissement, personnalisation (logo, couleurs, privilèges).
 - **Abonnements intelligents**
-  - **Gratuit (80% des fonctionnalités)** : profils, matching, chat, sessions, certificats basiques.
-  - **Avancé (Premium)** : stats détaillées, stockage accru, replay visioconf, assistants IA étendus, analytics perso.
-  - **VIP / Établissements** : intégrations LMS/API, multi-groupes, analytics avancées, SSO.
+  - Gratuit (80% des fonctionnalités) : profils, matching, chat, sessions, certificats basiques.
+  - Avancé (Premium) : stats détaillées, stockage accru, replay visioconf, assistants IA étendus, analytics perso.
+  - VIP / Établissements : intégrations LMS/API, multi-groupes, analytics avancées, SSO.
 - **IA Agents intégrés**
-  - **IA Mentor** (parcours d’apprentissage personnalisés).
-  - **IA Assistant Prof** (préparation de cours, tâches, quiz, corrections assistées).
-  - **IA Copilote Étudiant** (explications, exercices, traduction, récap de session).
-  - **IA Modération** (contenu, scams, sécurité).
-  - **IA Traduction Chat** (realtime, multi-langues).
+  - IA Mentor (parcours d’apprentissage personnalisés).
+  - IA Assistant Prof (préparation de cours, tâches, quiz, corrections assistées).
+  - IA Copilote Étudiant (explications, exercices, traduction, récap de session).
+  - IA Modération (contenu, scams, sécurité).
+  - IA Traduction Chat (realtime, multi-langues).
 - **Sécurité & Modération**
   - Auth JWT + OAuth (Google/GitHub), 2FA optionnelle.
-  - Vérification email/téléphone, **KYC légère** pour identité.
+  - Vérification email/téléphone, KYC légère pour identité.
   - Signalement/blocage, masquage de localisation précise, RGPD.
 
-### Utilité
-- **Enseignants** : visibilité, classement, gestion de groupes & cours, reconnaissance via diplômes vérifiés.  
-- **Apprenants** : apprentissage flexible, progression et reconnaissance, suppression barrière de la langue, mode hors-ligne.  
-- **Institutions** : plateforme e-learning personnalisée, analytics, intégrations.  
-- **Tous** : hub central du savoir, motivant et assisté par IA.
+---
+
+## 2bis. Roadmap Fonctionnalités
+
+### MVP (Version 1.0) — Core
+- Authentification email/mot de passe, vérification email.
+- Création de profil, bio, photo, localisation approximative.
+- Déclarer “J’enseigne / J’apprends” avec niveau et disponibilité.
+- Tags de compétences et langues.
+- Matching basique par compétences, distance, disponibilité.
+- Recherche par mots-clés et filtres (rayon, niveau, langue, distanciel/présentiel).
+- Chat 1-1 temps réel (texte).
+- Notifications push/email.
+- Proposer/Confirmer une session avec rappels automatiques.
+- Évaluations : étoiles + critères.
+- Signalement et blocage d’utilisateurs.
+- Admin minimal pour modération et bannissement.
+- Sécurité API : rate-limit, Helmet, CORS.
+- RGPD : consentement, export/suppression compte.
+
+### Version 1.1 — Confiance et utilisabilité
+- Login OAuth Google, vérification téléphone par OTP.
+- Upload certificats/diplômes et affichage badge.
+- Partage de fichiers dans le chat.
+- Traduction basique du chat.
+- Avis textuels et signalement de contenu.
+- Score de fiabilité (no-show, annulations).
+- Gamification : points, classement Top 10.
+- Onboarding guidé.
+- Admin dashboard plus complet.
+- Préférences notifications et langues.
+- File storage et crash/error logging.
+
+### Version 1.2 — Engagement et communauté
+- Vidéo de présentation ≤30s.
+- Vérification manuelle certificats, badge certifié.
+- KYC légère avec badge vérifié.
+- Mode hors-ligne pour profils et historique messages.
+- Votes “utile” sur avis, stats personnelles simples.
+- Badge automatique via vérif diplôme.
+- Modération IA de contenu.
+- Scan antivirus sur fichiers uploadés.
+- Observabilité minimale (métriques).
+- Groupes collaboratifs simples, forum de groupe, tâches avec deadline.
+
+### Version 2.0 — Premium et avancé
+- 2FA optionnelle.
+- Messages vocaux dans le chat.
+- Visioconférence intégrée WebRTC/Zoom.
+- Breakout rooms et tableau blanc collaboratif.
+- Abonnements Premium/VIP.
+- Mode Écoles/Universités avec exports.
 
 ---
 
