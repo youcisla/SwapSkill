@@ -157,7 +157,7 @@ flowchart LR
   subgraph Core Services
     Auth[Auth & Users]
     Match[Skills & Matching]
-    Chat[Chat (texte)]
+    Chat[Chat]
     Sess[Sessions]
     Rev[Reviews]
     Notif[Notifications]
