@@ -713,7 +713,7 @@ flowchart TD
 flowchart TD
   A[Chat 1-1] --> B[Attacher fichier]
   B --> C[Scan rapide / taille max]
-  C --> D[Traduire message (option)]
+  C --> D[Traduire message]
   D --> E[Stockage fichier + message traduit]
 ```
 
