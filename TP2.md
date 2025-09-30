@@ -150,7 +150,7 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Notifications**      | Push/email pour rappels sessions.                                                                | Déclenché par Sessions.                             |
 | **Admin & Modération** | Outils minimaux de bannissement et signalements.                                                 | Relié à Users et Reviews.                           |
 
-```
+```mermaid
 flowchart LR
   App[Mobile App] -->|HTTPS/JSON| API[API Gateway]
 
@@ -191,7 +191,7 @@ flowchart LR
 | **Gamification v1**               | Points de base, classement Top 10.           | Collecte d’événements depuis Sessions, Reviews, Chat. |
 | **Translation Service (basique)** | Traduction du chat.                          | Relié à Chat.                                         |
 
-```
+```mermaid
 flowchart LR
   App[Mobile App] --> API[API Gateway]
 
@@ -250,7 +250,7 @@ flowchart LR
 | **Gamification v2**       | Stats personnelles, badges, votes utiles.             | Améliore Gamification v1.      |
 | **Content Moderation AI** | Détection contenu frauduleux.                         | Relié à Chat et Groups.        |
 
-```
+```mermaid
 flowchart LR
   App[Mobile App] --> API[API Gateway]
 
@@ -312,7 +312,7 @@ flowchart LR
 | **AI Translation avancée** | Traduction illimitée multilingue.                         | Relié à Chat et Groups.                 |
 | **Payments**               | Abonnements, institutions (écoles/universités).           | Relié à Users et Premium Subscriptions. |
 
-```
+```mermaid
 flowchart LR
   App[Mobile App] --> API[API Gateway]
 
