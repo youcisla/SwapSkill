@@ -150,6 +150,35 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Notifications**      | Push/email pour rappels sessions.                                                                | Déclenché par Sessions.                             |
 | **Admin & Modération** | Outils minimaux de bannissement et signalements.                                                 | Relié à Users et Reviews.                           |
 
+```
+flowchart LR
+  App[Mobile App] -->|HTTPS/JSON| API[API Gateway]
+
+  subgraph Core Services
+    Auth[Auth & Users]
+    Match[Skills & Matching]
+    Chat[Chat (texte)]
+    Sess[Sessions]
+    Rev[Reviews]
+    Notif[Notifications]
+    Admin[Admin & Modération]
+  end
+
+  API --> Auth
+  API --> Match
+  API --> Chat
+  API --> Sess
+  API --> Rev
+  API --> Notif
+  API --> Admin
+
+  %% Inter-service calls
+  Match --> Auth
+  Chat --> Auth
+  Sess --> Auth
+  Rev --> Sess
+  Notif --> Sess
+```
 ---
 
 ### Version 1.1 – Confiance et utilisabilité
@@ -162,6 +191,52 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Gamification v1**               | Points de base, classement Top 10.           | Collecte d’événements depuis Sessions, Reviews, Chat. |
 | **Translation Service (basique)** | Traduction du chat.                          | Relié à Chat.                                         |
 
+```
+flowchart LR
+  App[Mobile App] --> API[API Gateway]
+
+  subgraph Core v1.0
+    Auth[Auth & Users]
+    Match[Skills & Matching]
+    Chat[Chat]
+    Sess[Sessions]
+    Rev[Reviews]
+    Notif[Notifications]
+    Admin[Admin & Modération]
+  end
+
+  subgraph New v1.1
+    OAuth[OAuth/Identity]
+    Files[File Storage]
+    Gam1[Gamification v1]
+    Trans1[Translation]
+    Reports[Content Reporting]
+  end
+
+  API --> Auth
+  API --> OAuth
+  API --> Match
+  API --> Chat
+  API --> Sess
+  API --> Rev
+  API --> Notif
+  API --> Admin
+  API --> Files
+  API --> Gam1
+  API --> Trans1
+  API --> Reports
+
+  %% Inter-service
+  OAuth --> Auth
+  Files --> Auth
+  Gam1 --> Sess
+  Gam1 --> Rev
+  Trans1 --> Chat
+  Reports --> Chat
+  Reports --> Admin
+  Notif --> Sess
+
+```
 ---
 
 ### Version 1.2 – Engagement et communauté
@@ -175,6 +250,54 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Gamification v2**       | Stats personnelles, badges, votes utiles.             | Améliore Gamification v1.      |
 | **Content Moderation AI** | Détection contenu frauduleux.                         | Relié à Chat et Groups.        |
 
+```
+flowchart LR
+  App[Mobile App] --> API[API Gateway]
+
+  subgraph Core v1.1
+    Auth[Auth & Users]
+    OAuth[OAuth/Identity]
+    Match[Skills & Matching]
+    Chat[Chat]
+    Sess[Sessions]
+    Rev[Reviews]
+    Notif[Notifications]
+    Admin[Admin & Modération]
+    Files[File Storage]
+    Gam1[Gamification v1]
+    Trans1[Translation]
+    Reports[Content Reporting]
+  end
+
+  subgraph New v1.2
+    KYC[KYC léger]
+    VProf[Video Profiles]
+    Offline[Offline Mode]
+    Groups[Groups & Tasks]
+    Gam2[Gamification v2]
+    AIMod[AI Moderation]
+  end
+
+  API --> KYC
+  API --> VProf
+  API --> Offline
+  API --> Groups
+  API --> Gam2
+  API --> AIMod
+
+  %% Inter-service
+  KYC --> Auth
+  VProf --> Files
+  Groups --> Files
+  Groups --> Auth
+  Gam2 --> Gam1
+  Gam2 --> Sess
+  Gam2 --> Rev
+  AIMod --> Chat
+  AIMod --> Groups
+  Notif --> Sess
+  Notif --> Groups
+```
 ---
 
 ### Version 2.0 – Premium et avancé
@@ -189,6 +312,62 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **AI Translation avancée** | Traduction illimitée multilingue.                         | Relié à Chat et Groups.                 |
 | **Payments**               | Abonnements, institutions (écoles/universités).           | Relié à Users et Premium Subscriptions. |
 
+```
+flowchart LR
+  App[Mobile App] --> API[API Gateway]
+
+  subgraph Core v1.2
+    Auth[Auth & Users]
+    OAuth[OAuth/Identity]
+    Match[Skills & Matching]
+    Chat[Chat]
+    Sess[Sessions]
+    Rev[Reviews]
+    Notif[Notifications]
+    Admin[Admin & Modération]
+    Files[File Storage]
+    Groups[Groups & Tasks]
+    Gam2[Gamification v2]
+    Trans1[Translation]
+    AIMod[AI Moderation]
+  end
+
+  subgraph New v2.0
+    Video[Virtual Class]
+    Voice[Voice Messages]
+    Gam3[Gamification v3]
+    Subs[Premium Subscriptions]
+    Pay[Payments]
+    AIAgents[AI Mentor/Prof/Student]
+    Trans2[AI Translation]
+  end
+
+  API --> Video
+  API --> Voice
+  API --> Gam3
+  API --> Subs
+  API --> Pay
+  API --> AIAgents
+  API --> Trans2
+
+  %% Inter-service
+  Video --> Sess
+  Video --> Groups
+  Voice --> Chat
+  Gam3 --> Gam2
+  Gam3 --> Sess
+  Gam3 --> Rev
+  Subs --> Auth
+  Pay --> Subs
+  Pay --> Auth
+  AIAgents --> Auth
+  AIAgents --> Sess
+  Trans2 --> Chat
+  Trans2 --> Groups
+  Notif --> Sess
+  Notif --> Video
+  Notif --> Groups
+```
 ---
 
 ## 3.2 Bases de Données
