@@ -151,35 +151,8 @@ Le tout avec un système **d’échange de savoirs**, de **classements**, de **g
 | **Admin & Modération** | Outils minimaux de bannissement et signalements.                                                 | Relié à Users et Reviews.                           |
 
 **Titre du diagramme :** Architecture des microservices – MVP v1.0
-```mermaid
-flowchart LR
-  App[Mobile App] -->|HTTPS/JSON| API[API Gateway]
+<img width="1356" height="642" alt="image" src="https://github.com/user-attachments/assets/99e51b81-3ba2-4e55-a553-6b76a7724087" />
 
-  subgraph Core Services
-    Auth[Auth & Users]
-    Match[Skills & Matching]
-    Chat[Chat]
-    Sess[Sessions]
-    Rev[Reviews]
-    Notif[Notifications]
-    Admin[Admin & Modération]
-  end
-
-  API --> Auth
-  API --> Match
-  API --> Chat
-  API --> Sess
-  API --> Rev
-  API --> Notif
-  API --> Admin
-
-  %% Inter-service calls
-  Match --> Auth
-  Chat --> Auth
-  Sess --> Auth
-  Rev --> Sess
-  Notif --> Sess
-```
 
 ## Explication — MVP (v1.0)
 
@@ -200,52 +173,8 @@ flowchart LR
 | **Translation Service (basique)** | Traduction du chat.                          | Relié à Chat.                                         |
 
 **Titre du diagramme :** Architecture des microservices – Version 1.1
-```mermaid
-flowchart LR
-  App[Mobile App] --> API[API Gateway]
+<img width="955" height="1087" alt="image" src="https://github.com/user-attachments/assets/04cc2f31-09a7-4d33-bd91-da42fba1a397" />
 
-  subgraph Core v1.0
-    Auth[Auth & Users]
-    Match[Skills & Matching]
-    Chat[Chat]
-    Sess[Sessions]
-    Rev[Reviews]
-    Notif[Notifications]
-    Admin[Admin & Modération]
-  end
-
-  subgraph New v1.1
-    OAuth[OAuth/Identity]
-    Files[File Storage]
-    Gam1[Gamification v1]
-    Trans1[Translation]
-    Reports[Content Reporting]
-  end
-
-  API --> Auth
-  API --> OAuth
-  API --> Match
-  API --> Chat
-  API --> Sess
-  API --> Rev
-  API --> Notif
-  API --> Admin
-  API --> Files
-  API --> Gam1
-  API --> Trans1
-  API --> Reports
-
-  %% Inter-service
-  OAuth --> Auth
-  Files --> Auth
-  Gam1 --> Sess
-  Gam1 --> Rev
-  Trans1 --> Chat
-  Reports --> Chat
-  Reports --> Admin
-  Notif --> Sess
-
-```
 
 
 ## Explication — v1.1
