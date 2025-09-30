@@ -1,0 +1,20 @@
+usecaseDiagram
+actor Utilisateur
+actor Administrateur
+actor Systeme as "Système externe"
+
+Utilisateur --> (S'inscrire / Se connecter)
+Utilisateur --> (Gérer son profil)
+Utilisateur --> (Rechercher des compétences)
+Utilisateur --> (Contacter un utilisateur)
+Utilisateur --> (Planifier une session)
+Utilisateur --> (Uploader un document)
+Utilisateur --> (Donner une évaluation)
+Utilisateur --> (Recevoir des notifications)
+
+Administrateur --> (Gérer utilisateurs)
+Administrateur --> (Modérer contenu)
+Administrateur --> (Superviser les sessions)
+
+Systeme --> (Envoyer notifications)
+Systeme --> (Stocker documents)
