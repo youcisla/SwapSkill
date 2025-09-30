@@ -420,12 +420,126 @@ flowchart LR
 
 ---
 
-## 3.3 Gestion des Données
+## 3.3 Gestion des Données — Modélisation (résumé concret)
 
-* **MVP** : Users, Skills, Sessions, Messages (texte), Reviews, Notifications.
-* **V1.1** : Certificats, fichiers, traductions basiques, points & classements.
-* **V1.2** : Vidéos profils, groupes, tâches, badges, modération IA.
-* **V2.0** : Sessions vidéo, vocaux, abonnements, paiements, AI Mentor/Prof/Student.
+### MVP (v1.0)
+
+* **Auth & Users**
+  Données : profil (nom, email, photo, langue, rôles, localisation approx).
+  Structure : **doc Mongo `User`**, index **email (unique)**.
+  Usage : login/JWT, affichage profil, contrôle d’accès.
+
+* **Skills & Matching**
+  Données : compétences par user (label, type TEACH/LEARN, niveau, dispo).
+  Structure : **doc Mongo `Skill`** (1..n / user), index **label (texte), type, niveau**.
+  Usage : recherche + filtres, suggestions basiques.
+
+* **Sessions**
+  Données : rendez-vous (participants, dates, lieu/lien, statut).
+  Structure : **doc Mongo `Session`**, index **userAId/userBId, startAt, status**.
+  Usage : planification, changements d’état, déclenchement rappels.
+
+* **Chat (texte)**
+  Données : messages 1–1 (texte, langue, horodatage).
+  Structure : **doc Mongo `Message`** lié à `sessionId`, index **sessionId+createdAt**.
+  Usage : timeline, pagination.
+
+* **Reviews**
+  Données : avis (étoiles + critères, commentaire).
+  Structure : **doc Mongo `Review`**, contrainte **unique (sessionId, reviewerId)**.
+  Usage : réputation/notes de profil.
+
+* **Notifications**
+  Données : journal d’envoi (type, cible, statut).
+  Structure : **doc Mongo `NotificationLog`**, index **userId+sentAt** (TTL possible).
+  Usage : audit des push/email, replays si échec.
+
+* **Admin & Modération**
+  Données : signalements (cible, motif, statut).
+  Structure : **doc Mongo `Report`**, index **status, reportedUserId**.
+  Usage : tri, décision, traçabilité.
+
+---
+
+### Ajouts v1.1
+
+* **OAuth & Identity**
+  Données : liens SSO (provider, providerId), téléphone vérifié (OTP).
+  Structure : **`IdentityLink`**, **`PhoneVerification`**, index **(provider, providerId)** unique / **phone** unique.
+  Usage : connexion simplifiée, renforcement identité.
+
+* **File Storage (métadonnées)**
+  Données : fichiers (type CERTIFICATE/ATTACHMENT, url, mime, taille, scan).
+  Structure : **doc `File`** (blobs sur S3/Drive), index **ownerId+type**.
+  Usage : certificats, pièces jointes de chat.
+
+* **Gamification v1**
+  Données : événements d’activité, tableaux Top10.
+  Structure : **`ActivityEvent`**, **`Leaderboard`**, index **timeframe+score**.
+  Usage : points & classement.
+
+* **Translation (basique)**
+  Données : texte traduit.
+  Structure : champs **`translatedText`, `translatedLang`** sur `Message`.
+  Usage : lecture multilingue à la demande.
+
+---
+
+### Ajouts v1.2
+
+* **KYC léger**
+  Données : statut de vérification (PENDING/APPROVED/REJECTED).
+  Structure : **doc `KYCCheck`** lié à `userId`.
+  Usage : badge vérifié (miroir dans `User.idVerified`).
+
+* **Video Profiles**
+  Données : vidéo ≤30s (url, durée).
+  Structure : **doc `Media` (INTRO_VIDEO)**, blob sur S3.
+  Usage : présentation sur profil.
+
+* **Groups & Tasks**
+  Données : groupes, membres, tâches (statut, deadline).
+  Structure : **`Group`**, **`GroupMembership`**, **`Task`** ; index **groupId, status, deadline**.
+  Usage : forums/organisation en petits groupes.
+
+* **Gamification v2**
+  Données : badges, stats personnelles.
+  Structure : **`Badge`**, **`UserBadge`**, **`UserStats`**.
+  Usage : engagement, reconnaissance.
+
+* **AI Moderation**
+  Données : flags de contenu (score, labels, statut).
+  Structure : **doc `ModerationFlag`** (cible = message/post/fichier).
+  Usage : file d’attente pour revue admin.
+
+---
+
+### Ajouts v2.0
+
+* **Video & Virtual Class**
+  Données : salles (contexte session/groupe), enregistrements.
+  Structure : **`Room`**, **`Recording`** (métas Mongo, médias S3).
+  Usage : cours live, replays.
+
+* **Voice Messages**
+  Données : audio + transcription (option).
+  Structure : champs **`audioUrl`**, `transcript` sur `Message`.
+  Usage : échanges vocaux intégrés au chat.
+
+* **Premium Subscriptions**
+  Données : abonnement (plan, statut, période), droits actifs.
+  Structure : **`Subscription`**, **`Entitlement`** (Mongo/PG).
+  Usage : activation des features premium.
+
+* **Payments (PostgreSQL)**
+  Données : intents, factures, client, statuts.
+  Structure : tables **`payment_intent`**, **`invoice`**, FK `user_id`.
+  Usage : encaissement, conformité.
+
+* **AI Agents / Translation avancée**
+  Données : sessions d’IA, messages, feedback ; logs de traduction.
+  Structure : **`AiSession`**, **`AiMessage`**, **`AiFeedback`**.
+  Usage : mentorat, aide pédagogique, meilleure traduction.
 
 ---
 
