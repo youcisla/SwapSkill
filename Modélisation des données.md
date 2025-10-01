@@ -203,6 +203,5 @@
 
 ---
 
-_Fin — section “Réplication” prête à merger dans votre README._
 
 
