@@ -240,7 +240,7 @@
 ---
 * `==>|sync|` = réplication synchrone, `-.->|async|` = réplication asynchrone.
 
-#### B) PostgreSQL — Actif–Passif (primaire + sync standby + DR)
+####  PostgreSQL — Actif–Passif (primaire + sync standby + DR)
 - **APP → pgbouncer/HAProxy → PG1** : l’application se connecte via un proxy au **Primary**.
 - **PG2 (sync standby)** : chaque commit est validé après ACK de PG2 ⇒ **RPO≈0** en local.
 - **PGDR (async)** : réplique distante pour **DR** (tolère un léger retard).
