@@ -327,6 +327,7 @@
 <img width="1260" height="412" alt="image" src="https://github.com/user-attachments/assets/abb9119a-4e7f-4f87-87e8-c6f6fd604369" />
 
  le Proxy envoie vers le Primary ; la réplication vers PG2 est synchrone (zéro perte locale), et vers PGDR asynchrone (site de secours).
+
 ---
 
 ### 4.3 Mesures clés (résumé)
