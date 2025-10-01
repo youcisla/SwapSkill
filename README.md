@@ -397,7 +397,7 @@ erDiagram
 		string[] roles
 		number reputation
 		number score_fiabilite
-	}
+	},
 
 	COMPETENCE {
 		string id_competence PK
@@ -406,7 +406,7 @@ erDiagram
 		enum type "ENSEIGNE|APPREND"
 		enum niveau "DEBUTANT|INTERMEDIAIRE|AVANCE"
 		string disponibilite
-	}
+	},
 
 	SESSION {
 		string id_session PK
