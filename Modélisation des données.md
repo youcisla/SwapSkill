@@ -204,4 +204,96 @@
 ---
 
 
+## 3) Configuration du Cluster — Choix et justification
 
+### 3.1 Choix par domaine
+- **Domaine social (MongoDB : profils, skills, sessions, messages, reviews)**  
+  **Mode : Actif–Actif (sharding + replica sets)**  
+  **Pourquoi :** charge d’écriture/lecture élevée et distribuée, latence faible (chat), scalabilité horizontale, tolérance aux pannes par shard.
+
+- **Paiements/abonnements (PostgreSQL)**  
+  **Mode : Actif–Passif (primaire + standby synchrone + DR asynchrone)**  
+  **Pourquoi :** cohérence stricte (RPO≈0) pour les transactions, bascule contrôlée et rapide.
+
+---
+
+### 3.2 Topologies de référence
+
+#### A) MongoDB — Actif–Actif (sharding + replica sets)
+<img width="1298" height="1048" alt="image" src="https://github.com/user-attachments/assets/f0834774-7039-4f16-a650-6b8bd5575f7e" />
+
+* `==>|sync|` = réplication synchrone, `-.->|async|` = réplication asynchrone.
+
+####  MongoDB — Actif–Actif (sharding + replica sets)
+- **U → LB → M1/M2** : les clients passent par l’API/LB puis par deux routeurs *mongos*.
+- **CS1–CS3** : serveurs de config (métadonnées du cluster). Les routeurs les consultent pour savoir où envoyer les requêtes.
+- **Shard A / Shard B** : chaque shard est un **replica set** (**Primary** + **Secondaries**).
+- **Écritures** : toujours sur le **Primary** du shard concerné (clé de sharding = répartition).
+- **Lectures** : temps réel sur *primary* ; possibilité d’utiliser des *secondaries* pour du reporting.
+- **Panne** : si un Primary tombe, une **élection** promeut un Secondary. Seul le shard touché est impacté.
+
+  
+#### B) PostgreSQL — Actif–Passif
+<img width="2037" height="970" alt="image" src="https://github.com/user-attachments/assets/030ed23e-7d24-4c1b-87b7-e64bda10fd23" />
+
+
+---
+* `==>|sync|` = réplication synchrone, `-.->|async|` = réplication asynchrone.
+
+#### B) PostgreSQL — Actif–Passif (primaire + sync standby + DR)
+- **APP → pgbouncer/HAProxy → PG1** : l’application se connecte via un proxy au **Primary**.
+- **PG2 (sync standby)** : chaque commit est validé après ACK de PG2 ⇒ **RPO≈0** en local.
+- **PGDR (async)** : réplique distante pour **DR** (tolère un léger retard).
+- **WAL Archive / S3** : archivage des journaux pour **PITR** (restaurations fines).
+- **Panne** : le proxy bascule sur le standby promu ; l’ancien primaire est réintégré ensuite.
+### 3.3 Pourquoi ces modes sont adaptés
+
+| Domaine | Mode | Besoin clé | Justification |
+|---|---|---|---|
+| Social (MongoDB) | Actif–Actif | **Latence & scalabilité** | Partitionnement par usage, parallélisme, absorption des pics chat/recherche |
+| Paiements (PostgreSQL) | Actif–Passif | **Cohérence & conformité** | Zéro perte locale (sync), bascule simple et testable, DR multi-région |
+
+---
+
+### 3.4 Comportement en fonctionnement & panne
+
+**MongoDB (Actif–Actif)**  
+- Normal : `mongos` répartit lectures/écritures par shard.  
+- Panne primaire : élection < 15 s, reroutage automatique.  
+- Panne shard : dégradation locale, le reste du système continue.
+
+**PostgreSQL (Actif–Passif)**  
+- Normal : commit après ack du standby synchrone (RPO≈0).  
+- Panne primaire : promotion du standby via proxy ; réintégration ensuite.  
+- Panne région : bascule pilotée sur DR (RPO = lag async).
+
+---
+
+### 3.5 Paramètres & bonnes pratiques
+
+**MongoDB**  
+- 3 nœuds data-bearing par replica set.  
+- `writeConcern`: `w:1` (messages), `w:"majority", j:true` (sessions/reviews).  
+- `readConcern`: `local` (temps réel), `majority` (critique).
+
+**PostgreSQL**  
+- `synchronous_commit=on` ; `synchronous_standby_names='1 (pgsync1,pgsync2)'`.  
+- WAL archiving + backups (PITR).  
+- pgbouncer/HAProxy + Patroni/pg_auto_failover.
+
+---
+
+### 3.6 Checklist
+
+- Multi-AZ pour les nœuds critiques.  
+- Quorum garanti sur chaque replica set Mongo.  
+- ≥ 2 mongos et 3 config servers.  
+- PG primaire + standby sync (AZ distinctes) + DR.  
+- Runbooks : failover Mongo/PG, restauration PITR.  
+- Monitoring : latence, replication lag, élections, erreurs WAL.
+
+---
+
+**Conclusion**  
+- **Actif–Actif (MongoDB)** pour la partie sociale temps réel et scalable.  
+- **Actif–Passif (PostgreSQL)** pour sécuriser les transactions avec **RPO≈0** et bascule maîtrisée.
