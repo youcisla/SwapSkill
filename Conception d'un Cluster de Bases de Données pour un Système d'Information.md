@@ -139,7 +139,7 @@
 
 ## 2) Choix de la Technique de Réplication
 
-### 2.1 Exploration des techniques (performance ⚡ vs fiabilité 🔒)
+### 2.1 Exploration des techniques (performance  vs fiabilité )
 
 | Technique | Principe | Avantages | Inconvénients / Risques | Cas d’usage |
 |---|---|---|---|---|
