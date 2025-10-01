@@ -394,7 +394,7 @@ erDiagram
 		string id_utilisateur PK
 		string courriel UNIQUE
 		string langue_preferee
-		string[] roles
+		string roles
 		number reputation
 		number score_fiabilite
 	}
@@ -403,8 +403,8 @@ erDiagram
 		string id_competence PK
 		string id_utilisateur FK
 		string libelle
-		enum type "ENSEIGNE|APPREND"
-		enum niveau "DEBUTANT|INTERMEDIAIRE|AVANCE"
+		string type_competence
+		string niveau_competence
 		string disponibilite
 	}
 
@@ -414,7 +414,7 @@ erDiagram
 		string id_enseignant FK
 		datetime debut
 		datetime fin
-		enum statut "PROPOSEE|CONFIRMEE|REALISEE|ANNULEE|ABSENCE"
+		string statut_session
 		string lieu_ou_lien
 	}
 
@@ -433,10 +433,10 @@ erDiagram
 		string id_emetteur FK
 		string id_cible FK
 		number note_etoiles
-		number ponctualite
-		number pedagogie
-		number motivation
-		number communication
+		number note_ponctualite
+		number note_pedagogie
+		number note_motivation
+		number note_communication
 		string commentaire
 	}
 
@@ -466,7 +466,7 @@ erDiagram
 		string id_abonnement PK
 		string id_utilisateur FK
 		string formule
-		enum statut "ACTIF|EN_ATTENTE|SUSPENDU|EXPIRE"
+		string statut_abonnement
 		datetime debut
 		datetime fin
 	}
@@ -476,7 +476,7 @@ erDiagram
 		string id_utilisateur FK
 		number montant
 		string devise
-		enum statut "INITIEE|CONFIRMEE|ANNULEE|EXPIREE"
+		string statut_paiement
 		datetime cree_le
 	}
 
@@ -485,7 +485,7 @@ erDiagram
 		string id_intention_paiement FK
 		string reference_externe
 		number montant
-		enum statut "EN_ATTENTE|PAYEE|REMBOURSEE"
+		string statut_facture
 		datetime emise_le
 	}
 
