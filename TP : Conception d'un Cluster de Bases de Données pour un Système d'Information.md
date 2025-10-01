@@ -1,21 +1,15 @@
 <!-- prettier-ignore-start -->
 <p align="center">
-  <h1 align="center">📚 SwapSkill — Modélisation & Réplication & HA</h1>
+  <h1 align="center">SwapSkill — Modélisation & Réplication & HA</h1>
   <p align="center">
     <em>ER + dictionnaire PK/FK/Index • Réplication • Configuration du cluster • Haute dispo</em>
-  </p>
-  <p align="center">
-    <img src="https://img.shields.io/badge/DB-MongoDB%20%7C%20PostgreSQL-4EA94B?logo=mongodb&logoColor=white" />
-    <img src="https://img.shields.io/badge/HA-Active--Active%20%2F%20Active--Passive-8A2BE2" />
-    <img src="https://img.shields.io/badge/RPO-~0%20(finance)%20%7C%20%3C=5min%20(social)-blue" />
-    <img src="https://img.shields.io/badge/RTO-1--2min%20(finance)%20%7C%20%3C=10min%20(social)-blueviolet" />
-  </p>
+ 
 </p>
 <!-- prettier-ignore-end -->
 
 ---
 
-## 🗺️ Table des matières
+##  Table des matières
 - [1) Modélisation des données](#-1-modélisation-des-données-er--dictionnaire-pkfkindex)
 - [2) Choix de la technique de réplication](#-2-choix-de-la-technique-de-réplication)
 - [3) Configuration du cluster](#-3-configuration-du-cluster--choix-et-justification)
@@ -23,7 +17,7 @@
 
 ---
 
-## 📦 1) Modélisation des données (ER + dictionnaire PK/FK/Index)
+##  1) Modélisation des données (ER + dictionnaire PK/FK/Index)
 
 ### 1.1 Diagramme ER (synthèse)
 <p align="center">
@@ -124,7 +118,7 @@
 
 ---
 
-## 🔁 2) Choix de la Technique de Réplication
+##  2) Choix de la Technique de Réplication
 
 ### 2.1 Panorama (perf ⚡ vs fiabilité 🔒)
 | Technique | Principe | Avantages | Limites | Cas d’usage |
@@ -146,7 +140,7 @@
 
 ---
 
-## 🧩 3) Configuration du Cluster — Choix et justification
+##  3) Configuration du Cluster — Choix et justification
 
 ### 3.1 Choix par domaine
 - **MongoDB (social)** : **Actif–Actif** (sharding + replica sets) — latence faible, échelle horizontale, pannes isolées par shard.  
@@ -169,7 +163,7 @@
 
 ---
 
-## ☁️ 4) Haute Disponibilité — SwapSkill (Section 4)
+##  4) Haute Disponibilité — SwapSkill (Section 4)
 
 ### 4.1 Objectifs & principes
 - **RPO/RTO** : MongoDB ≤ 5 min / 10 min ; PostgreSQL ≈ 0 / 1–2 min.  
