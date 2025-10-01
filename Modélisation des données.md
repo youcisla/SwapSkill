@@ -298,7 +298,6 @@
 - **Actif–Actif (MongoDB)** pour la partie sociale temps réel et scalable.  
 - **Actif–Passif (PostgreSQL)** pour sécuriser les transactions avec **RPO≈0** et bascule maîtrisée.
 
-  # ☁️ Haute Disponibilité — SwapSkill (Section 4)
 
 #  SwapSkill — **Planification de la Haute Disponibilité**
 
