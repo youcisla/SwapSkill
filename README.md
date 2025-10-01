@@ -502,7 +502,6 @@ erDiagram
 	ABONNEMENT ||--o{ FACTURE : justifie
 	INTENTION_PAIEMENT ||--o{ FACTURE : produit
 ```
-
 ## Modèle Physique de Données (Physical Data Model)
 
 La représentation physique détaille où et comment chaque entité est stockée, ainsi que les index optimisant les opérations critiques.
