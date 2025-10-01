@@ -387,6 +387,122 @@ La vue logique précise les attributs structurants, les clés et les dépendance
 | Abonnement | id_utilisateur, formule, statut, début, fin | `id_abonnement` | `id_utilisateur → Utilisateur` |
 | IntentionPaiement | id_utilisateur, montant, devise, statut, créé_le | `id_intention_paiement` | `id_utilisateur → Utilisateur` |
 
+##### Diagramme – Vue logique des entités et dépendances
+```mermaid
+erDiagram
+	UTILISATEUR {
+		string id_utilisateur PK
+		string courriel UNIQUE
+		string langue_preferee
+		string[] roles
+		number reputation
+		number score_fiabilite
+	}
+
+	COMPETENCE {
+		string id_competence PK
+		string id_utilisateur FK
+		string libelle
+		enum type "ENSEIGNE|APPREND"
+		enum niveau "DEBUTANT|INTERMEDIAIRE|AVANCE"
+		string disponibilite
+	}
+
+	SESSION {
+		string id_session PK
+		string id_apprenant FK
+		string id_enseignant FK
+		datetime debut
+		datetime fin
+		enum statut "PROPOSEE|CONFIRMEE|REALISEE|ANNULEE|ABSENCE"
+		string lieu_ou_lien
+	}
+
+	MESSAGE {
+		string id_message PK
+		string id_session FK
+		string id_expediteur FK
+		string texte
+		string langue
+		datetime cree_le
+	}
+
+	AVIS {
+		string id_avis PK
+		string id_session FK
+		string id_emetteur FK
+		string id_cible FK
+		number note_etoiles
+		number ponctualite
+		number pedagogie
+		number motivation
+		number communication
+		string commentaire
+	}
+
+	GROUPE {
+		string id_groupe PK
+		string titre
+		string visibilite
+	}
+
+	ADHESION_GROUPE {
+		string id_adhesion PK
+		string id_groupe FK
+		string id_utilisateur FK
+		string role
+		datetime rejoint_le
+	}
+
+	TACHE {
+		string id_tache PK
+		string id_groupe FK
+		string titre
+		string statut
+		datetime echeance
+	}
+
+	ABONNEMENT {
+		string id_abonnement PK
+		string id_utilisateur FK
+		string formule
+		enum statut "ACTIF|EN_ATTENTE|SUSPENDU|EXPIRE"
+		datetime debut
+		datetime fin
+	}
+
+	INTENTION_PAIEMENT {
+		string id_intention_paiement PK
+		string id_utilisateur FK
+		number montant
+		string devise
+		enum statut "INITIEE|CONFIRMEE|ANNULEE|EXPIREE"
+		datetime cree_le
+	}
+
+	FACTURE {
+		string id_facture PK
+		string id_intention_paiement FK
+		string reference_externe
+		number montant
+		enum statut "EN_ATTENTE|PAYEE|REMBOURSEE"
+		datetime emise_le
+	}
+
+	UTILISATEUR ||--o{ COMPETENCE : possede
+	UTILISATEUR ||--o{ SESSION : participe
+	UTILISATEUR ||--o{ AVIS : evalue
+	UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
+	UTILISATEUR ||--o{ ABONNEMENT : souscrit
+	UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
+	SESSION ||--o{ MESSAGE : contient
+	SESSION ||--o{ AVIS : genere
+	GROUPE ||--o{ ADHESION_GROUPE : gere
+	GROUPE ||--o{ TACHE : planifie
+	ABONNEMENT ||--o{ FACTURE : justifie
+	INTENTION_PAIEMENT ||--o{ FACTURE : produit
+```
+
 ## Modèle Physique de Données (Physical Data Model)
 
 La représentation physique détaille où et comment chaque entité est stockée, ainsi que les index optimisant les opérations critiques.
@@ -398,6 +514,48 @@ La représentation physique détaille où et comment chaque entité est stockée
 | Groupe, AdhésionGroupe, Tâche | MongoDB | `(id_groupe, id_utilisateur)`, `(id_groupe, statut, echeance)` | Organisation des groupes et forums |
 | Abonnement, DroitAcces | MongoDB | `(id_utilisateur, statut)` | Activation rapide des options Premium |
 | IntentionPaiement, Facture | PostgreSQL (primaire + secours) | `id_utilisateur`, `statut` | Transactions financières cohérentes |
+
+##### Diagramme – Répartition physique et stockage
+```mermaid
+flowchart TB
+	subgraph MongoDBAtlas[MongoDB Atlas – Réplicat + Sharding]
+		Utilisateur[(Collection UTILISATEUR)]
+		Competence[(Collection COMPETENCE)]
+		Session[(Collection SESSION)]
+		Message[(Collection MESSAGE)]
+		Avis[(Collection AVIS)]
+		Groupe[(Collection GROUPE)]
+		Adhesion[(Collection ADHESION_GROUPE)]
+		Tache[(Collection TACHE)]
+		Abonnement[(Collection ABONNEMENT)]
+	end
+
+	subgraph ServicesTempsReel[Redis + Socket.io]
+		FluxChat[[Canal pub/sub CHAT]]
+	end
+
+	subgraph PostgreSQLCluster[PostgreSQL – Primaire & Secours]
+		Intention[(Table INTENTION_PAIEMENT)]
+		Facture[(Table FACTURE)]
+		DroitAcces[(Table DROIT_ACCES)]
+	end
+
+	subgraph StockageObjet[S3 / GCS]
+		MediaBucket[[Bucket MEDIA]]
+	end
+
+	Utilisateur --> Competence
+	Utilisateur --> Session
+	Session --> Message
+	Session --> Avis
+	Groupe --> Adhesion
+	Groupe --> Tache
+	Abonnement --> DroitAcces
+	Intention --> Facture
+	Session --> FluxChat
+	MediaBucket -.-> Session
+	MediaBucket -.-> Utilisateur
+```
 | JournalNotification | MongoDB | `(id_utilisateur, envoye_le)` + TTL | Traçabilité et purge automatique |
 | Média | S3 + métadonnées MongoDB | `(id_utilisateur, cree_le)` | Stockage des fichiers volumineux |
 
