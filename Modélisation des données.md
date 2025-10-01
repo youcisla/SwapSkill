@@ -1,4 +1,4 @@
-# 📚 Modélisation des données (ER + dictionnaire PK/FK/Index)
+#  Modélisation des données (ER + dictionnaire PK/FK/Index)
 
 ## 1) Diagramme ER (synthèse)
 
@@ -132,7 +132,7 @@
 - chronologie (`MESSAGE(session_id, created_at)`),  
 - réputation (`REVIEW(reviewee_id, created_at DESC)`).
 
-# 🔁 SwapSkill — **Choix de la Technique de Réplication**
+#  SwapSkill — **Choix de la Technique de Réplication**
 
 
 ---
@@ -204,7 +204,7 @@
 ---
 
 
-## 3) Configuration du Cluster — Choix et justification
+#  SwapSkill — **Configuration du Cluster — Choix et justification**
 
 ### 3.1 Choix par domaine
 - **Domaine social (MongoDB : profils, skills, sessions, messages, reviews)**  
@@ -300,7 +300,7 @@
 
   # ☁️ Haute Disponibilité — SwapSkill (Section 4)
 
-## 4) Planification de la Haute Disponibilité
+#  SwapSkill — **Planification de la Haute Disponibilité**
 
 ### 4.1 Objectifs & principes
 - **RPO/RTO** cibles : MongoDB ≤ 5 min / 10 min ; PostgreSQL ≈ 0 / 1–2 min.
