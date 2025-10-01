@@ -31,7 +31,7 @@ Document de synthèse couvrant la conception applicative (TP1), l’architecture
 
 ### 4. Diagrammes des interactions
 
-**Flux applicatif MVP**
+#### Diagramme – Flux applicatif MVP
 
 ```mermaid
 flowchart LR
@@ -45,7 +45,7 @@ flowchart LR
 	NotificationService --> PushBroker[Push/Email Provider]
 ```
 
-**Modèle de données conceptuel (extrait)**
+#### Diagramme – Modèle de données conceptuel (extrait)
 
 ```mermaid
 erDiagram
@@ -117,6 +117,7 @@ erDiagram
 #### Conception
 
 - ateliers personas (apprenant, enseignant, mentor, admin) ;
+- **Rôle du mentor (persona humaine)** : profil expert qui accompagne les apprenants sur la durée, propose des plans d’apprentissage personnalisés, garantit la qualité des sessions et renforce la confiance dans l’écosystème.
 - parcours utilisateurs complets (onboarding → matching → chat → session → feedback) ;
 - wireframes Figma pour profil, matching, chat, planification, groupe, statistiques ;
 - exigences d’accessibilité (contraste, navigation, textes alternatifs) et d’internationalisation FR/EN.
@@ -189,9 +190,11 @@ erDiagram
 | Payments & Subscriptions | Abonnements Premium/VIP, facturation | Mobile app, Admin |
 | Virtual Class | Visioconf, tableau blanc, breakout rooms | Sessions, Groups |
 
+**Rôle du Mentor (services IA)** : l’agent Mentor propose des parcours d’apprentissage guidés, synthétise les progrès des apprenants et suggère des activités adaptées. Il existe pour prolonger l’accompagnement humain, fluidifier la préparation des sessions et maintenir la motivation dans la durée.
+
 ### 2. Interactions & évolution
 
-**Architecture MVP (v1.0)**
+#### Diagramme – Architecture MVP (v1.0)
 
 ```mermaid
 flowchart LR
@@ -218,7 +221,7 @@ flowchart LR
 	Chat --> Auth
 ```
 
-**Vue d’ensemble des évolutions (v1.0 → v2.0)**
+#### Diagramme – Vue d’ensemble des évolutions (v1.0 → v2.0)
 
 ```mermaid
 flowchart LR
@@ -307,6 +310,98 @@ flowchart LR
 
 ---
 
+## Modèle de Conception de Données (Conceptual Data Model)
+
+Ce modèle illustre les grandes entités métiers, leurs relations et les flux d’information indispensables pour soutenir les parcours apprenant ↔ enseignant.
+
+##### Diagramme – Vue conceptuelle des entités
+```mermaid
+erDiagram
+	USER ||--o{ SKILL : possede
+	USER ||--o{ SESSION : planifie
+	USER ||--o{ REVIEW : evalue
+	USER ||--o{ GROUP_MEMBERSHIP : rejoint
+	USER ||--o{ SUBSCRIPTION : souscrit
+	USER ||--o{ PAYMENT_INTENT : initie
+	SESSION ||--o{ MESSAGE : contient
+	SESSION ||--o{ REVIEW : genere
+	GROUP ||--o{ GROUP_MEMBERSHIP : gere
+	GROUP ||--o{ TASK : organise
+	SUBSCRIPTION ||--o{ ENTITLEMENT : accorde
+	PAYMENT_INTENT ||--o{ INVOICE : confirme
+
+	USER {
+		string user_id
+		string name
+	}
+	SKILL {
+		string skill_id
+		string label
+	}
+	SESSION {
+		string session_id
+		datetime start_at
+	}
+	MESSAGE {
+		string message_id
+		string text
+	}
+	REVIEW {
+		string review_id
+		number stars
+	}
+	GROUP {
+		string group_id
+		string title
+	}
+	TASK {
+		string task_id
+		string status
+	}
+	SUBSCRIPTION {
+		string subscription_id
+		string plan
+	}
+	PAYMENT_INTENT {
+		string payment_intent_id
+		string status
+	}
+```
+
+## Modèle Logique de Données (Logical Data Model)
+
+La vue logique précise les attributs structurants, les clés et les dépendances qui guideront la construction des schémas dans les bases documentaires et relationnelles.
+
+##### Tableau – Structure logique des principales entités
+| Entité | Attributs clés | PK | FK / Relations |
+| --- | --- | --- | --- |
+| User | email, preferred_lang, roles, reputation, reliability_score | `user_id` | Référencé par `Skill`, `Session`, `Review`, `GroupMembership`, `Subscription`, `PaymentIntent` |
+| Skill | label, type, level, availability | `skill_id` | `user_id → User` |
+| Session | user_a_id, user_b_id, start_at, end_at, status, place_or_link | `session_id` | `user_a_id → User`, `user_b_id → User` |
+| Message | session_id, sender_id, text, lang, created_at | `message_id` | `session_id → Session`, `sender_id → User` |
+| Review | session_id, reviewer_id, reviewee_id, stars, criteria | `review_id` | `session_id → Session`, `reviewer_id → User`, `reviewee_id → User` |
+| Group | admin_id, title, visibility | `group_id` | `admin_id → User` |
+| GroupMembership | group_id, user_id, role, joined_at | `membership_id` | `group_id → Group`, `user_id → User` |
+| Task | group_id, title, status, deadline | `task_id` | `group_id → Group` |
+| Subscription | user_id, plan, status, start_at, end_at | `subscription_id` | `user_id → User` |
+| PaymentIntent | user_id, amount, currency, status, created_at | `payment_intent_id` | `user_id → User` |
+
+## Modèle Physique de Données (Physical Data Model)
+
+La représentation physique détaille où et comment chaque entité est stockée, ainsi que les index optimisant les opérations critiques.
+
+##### Tableau – Implémentation physique
+| Entité / Collection | Technologie | Index principaux | Notes |
+| --- | --- | --- | --- |
+| User, Skill, Session, Message, Review | MongoDB (replica set + sharding) | `email`, `(session_id, created_at)`, `(reviewee_id, created_at)` | Données temps réel, schéma flexible |
+| Group, GroupMembership, Task | MongoDB | `(group_id, user_id)`, `(group_id, status, deadline)` | Gestion collaborative et forums |
+| Subscription, Entitlement | MongoDB | `(user_id, status)` | Activation rapide des droits Premium |
+| PaymentIntent, Invoice | PostgreSQL (primary + standby) | `user_id`, `status` | Cohérence stricte pour transactions |
+| NotificationLog | MongoDB | `(user_id, sent_at)` + TTL | Traçabilité et purge automatique |
+| Media | S3 + métadonnées MongoDB | `(user_id, created_at)` | Stockage objets volumineux |
+
+---
+
 ## Phase 3 – Database Cluster (TP3)
 
 ### 1. Tables modélisées, clés et index
@@ -362,6 +457,7 @@ flowchart LR
 - write concerns différenciés : `w:1` (messages), `w:"majority", j:true` (sessions/reviews) ;  
 - read preference `primary` temps réel, `secondary` pour reporting.
 
+##### Diagramme – Topologie MongoDB en mode actif–actif
 ```mermaid
 flowchart TB
 	subgraph Client
@@ -412,6 +508,13 @@ flowchart TB
 - bascule orchestrée via HAProxy/pgbouncer + Patroni ;  
 - monitoring du `replication_lag`, tests de failover trimestriels.
 
+**Comprendre les rôles du cluster PostgreSQL :**
+- **Primary** : nœud principal qui accepte les écritures et sert de référence pour l’état des données.
+- **Standby synchrone** : réplique située dans une zone de disponibilité différente ; elle confirme chaque écriture avant validation, ce qui garantit un RPO≈0 en cas de bascule.
+- **Disaster Recovery (DR)** : réplique distante asynchrone conservée pour les incidents majeurs (perte de région). Elle peut être promue manuellement et se resynchronise via les journaux WAL archivés.
+Ces trois rôles fonctionnent ensemble : le primary sert le trafic normal, le standby synchrone prend le relais automatiquement si le primary devient indisponible, tandis que le nœud de DR assure une copie de secours à froid pour restaurer le service même en cas de catastrophe géographique.
+
+##### Diagramme – Topologie PostgreSQL en mode actif–passif
 ```mermaid
 flowchart LR
 	App --> Proxy[HAProxy/pgbouncer]
@@ -439,6 +542,7 @@ flowchart LR
 
 ### 7. Schémas de distribution & reprise
 
+##### Diagramme – Chaîne d’écriture et de réplication
 ```mermaid
 sequenceDiagram
 	participant Client
