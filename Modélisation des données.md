@@ -313,21 +313,21 @@
 #### A) MongoDB — Perte d’un Primary (élection automatique)
 <img width="1262" height="421" alt="image" src="https://github.com/user-attachments/assets/0a7d6a83-2454-4fa8-a44d-e2b219cc8c21" />
 
-**Explications (court) :** le routeur envoie au Primary ; en cas de panne, un Secondary est élu **Nouveau Primary** et le trafic est rerouté.
+ le routeur envoie au Primary ; en cas de panne, un Secondary est élu **Nouveau Primary** et le trafic est rerouté.
 
 ---
 
 #### B) MongoDB — Perte d’un shard (dégradation locale)
 <img width="1272" height="477" alt="image" src="https://github.com/user-attachments/assets/579408d6-9d93-4100-b4f1-e9070f12701c" />
 
-**Explications (court) :** si **Shard A** tombe, seules les données qu’il héberge sont impactées ; le reste du système fonctionne via **Shard B**.
+ si **Shard A** tombe, seules les données qu’il héberge sont impactées ; le reste du système fonctionne via **Shard B**.
 
 ---
 
 #### C) PostgreSQL — Perte du Primary (promotion standby)
 <img width="1260" height="412" alt="image" src="https://github.com/user-attachments/assets/abb9119a-4e7f-4f87-87e8-c6f6fd604369" />
 
-**Explications (court) :** le Proxy envoie vers le Primary ; la réplication vers PG2 est synchrone (zéro perte locale), et vers PGDR asynchrone (site de secours).
+ le Proxy envoie vers le Primary ; la réplication vers PG2 est synchrone (zéro perte locale), et vers PGDR asynchrone (site de secours).
 ---
 
 ### 4.3 Mesures clés (résumé)
