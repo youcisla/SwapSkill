@@ -134,7 +134,6 @@
 
 # 🔁 SwapSkill — **Choix de la Technique de Réplication**
 
-> Section prête à coller dans votre dépôt. Style concis, schémas, tableaux comparatifs et décision argumentée.
 
 ---
 
