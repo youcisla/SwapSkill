@@ -390,117 +390,120 @@ La vue logique précise les attributs structurants, les clés et les dépendance
 ##### Diagramme – Vue logique des entités et dépendances
 ```mermaid
 erDiagram
-	UTILISATEUR {
-		string id_utilisateur PK
-		string courriel UNIQUE
-		string langue_preferee
-		string roles
-		number reputation
-		number score_fiabilite
-	}
+    UTILISATEUR {
+        string id_utilisateur PK
+        string courriel UK
+        string langue_preferee
+        string roles
+        int reputation
+        int score_fiabilite
+    }
 
-	COMPETENCE {
-		string id_competence PK
-		string id_utilisateur FK
-		string libelle
-		string type_competence
-		string niveau_competence
-		string disponibilite
-	}
+    COMPETENCE {
+        string id_competence PK
+        string id_utilisateur FK
+        string libelle
+        string type_competence
+        string niveau_competence
+        string disponibilite
+    }
 
-	SESSION {
-		string id_session PK
-		string id_apprenant FK
-		string id_enseignant FK
-		datetime debut
-		datetime fin
-		string statut_session
-		string lieu_ou_lien
-	}
+    SESSION {
+        string id_session PK
+        string id_apprenant FK
+        string id_enseignant FK
+        datetime debut
+        datetime fin
+        string statut_session
+        string lieu_ou_lien
+    }
 
-	MESSAGE {
-		string id_message PK
-		string id_session FK
-		string id_expediteur FK
-		string texte
-		string langue
-		datetime cree_le
-	}
+    MESSAGE {
+        string id_message PK
+        string id_session FK
+        string id_expediteur FK
+        string texte
+        string langue
+        datetime cree_le
+    }
 
-	AVIS {
-		string id_avis PK
-		string id_session FK
-		string id_emetteur FK
-		string id_cible FK
-		number note_etoiles
-		number note_ponctualite
-		number note_pedagogie
-		number note_motivation
-		number note_communication
-		string commentaire
-	}
+    AVIS {
+        string id_avis PK
+        string id_session FK
+        string id_emetteur FK
+        string id_cible FK
+        int note_etoiles
+        int note_ponctualite
+        int note_pedagogie
+        int note_motivation
+        int note_communication
+        string commentaire
+    }
 
-	GROUPE {
-		string id_groupe PK
-		string titre
-		string visibilite
-	}
+    GROUPE {
+        string id_groupe PK
+        string titre
+        string visibilite
+    }
 
-	ADHESION_GROUPE {
-		string id_adhesion PK
-		string id_groupe FK
-		string id_utilisateur FK
-		string role
-		datetime rejoint_le
-	}
+    ADHESION_GROUPE {
+        string id_adhesion PK
+        string id_groupe FK
+        string id_utilisateur FK
+        string role
+        datetime rejoint_le
+    }
 
-	TACHE {
-		string id_tache PK
-		string id_groupe FK
-		string titre
-		string statut
-		datetime echeance
-	}
+    TACHE {
+        string id_tache PK
+        string id_groupe FK
+        string titre
+        string statut
+        datetime echeance
+    }
 
-	ABONNEMENT {
-		string id_abonnement PK
-		string id_utilisateur FK
-		string formule
-		string statut_abonnement
-		datetime debut
-		datetime fin
-	}
+    ABONNEMENT {
+        string id_abonnement PK
+        string id_utilisateur FK
+        string formule
+        string statut_abonnement
+        datetime debut
+        datetime fin
+    }
 
-	INTENTION_PAIEMENT {
-		string id_intention_paiement PK
-		string id_utilisateur FK
-		number montant
-		string devise
-		string statut_paiement
-		datetime cree_le
-	}
+    INTENTION_PAIEMENT {
+        string id_intention_paiement PK
+        string id_utilisateur FK
+        float montant
+        string devise
+        string statut_paiement
+        datetime cree_le
+    }
 
-	FACTURE {
-		string id_facture PK
-		string id_intention_paiement FK
-		string reference_externe
-		number montant
-		string statut_facture
-		datetime emise_le
-	}
+    FACTURE {
+        string id_facture PK
+        string id_intention_paiement FK
+        string reference_externe
+        float montant
+        string statut_facture
+        datetime emise_le
+    }
 
-	UTILISATEUR ||--o{ COMPETENCE : possede
-	UTILISATEUR ||--o{ SESSION : participe
-	UTILISATEUR ||--o{ AVIS : evalue
-	UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
-	UTILISATEUR ||--o{ ABONNEMENT : souscrit
-	UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
-	SESSION ||--o{ MESSAGE : contient
-	SESSION ||--o{ AVIS : genere
-	GROUPE ||--o{ ADHESION_GROUPE : gere
-	GROUPE ||--o{ TACHE : planifie
-	ABONNEMENT ||--o{ FACTURE : justifie
-	INTENTION_PAIEMENT ||--o{ FACTURE : produit
+    UTILISATEUR ||--o{ COMPETENCE : possede
+    UTILISATEUR ||--o{ SESSION : participe
+    UTILISATEUR ||--o{ AVIS : evalue
+    UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
+    UTILISATEUR ||--o{ ABONNEMENT : souscrit
+    UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
+
+    SESSION ||--o{ MESSAGE : contient
+    SESSION ||--o{ AVIS : genere
+
+    GROUPE ||--o{ ADHESION_GROUPE : gere
+    GROUPE ||--o{ TACHE : planifie
+
+    ABONNEMENT ||--o{ FACTURE : justifie
+    INTENTION_PAIEMENT ||--o{ FACTURE : produit
 ```
 ## Modèle Physique de Données (Physical Data Model)
 
