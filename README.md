@@ -181,7 +181,7 @@ Document de synthèse couvrant la conception applicative (TP1), l’architecture
 Ce modèle illustre les grandes entités métiers, leurs relations et les flux d’information indispensables pour soutenir les parcours apprenant ↔ enseignant.
 
 ##### Diagramme – Vue conceptuelle des entités
-```mermaid
+
 <img width="2677" height="838" alt="image" src="https://github.com/user-attachments/assets/e4ae58e9-1ece-4060-8656-a91a9ece630f" />
 
 
