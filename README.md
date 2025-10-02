@@ -33,84 +33,13 @@ Document de synthèse couvrant la conception applicative (TP1), l’architecture
 
 #### Diagramme – Flux applicatif MVP
 
-```mermaid
-flowchart LR
-	ApplicationMobile[Application mobile] -- HTTPS/JSON --> PasserelleAPI[Passerelle API\nExpress]
-	PasserelleAPI --> ServiceAuth[Service Authentification & Utilisateurs]
-	PasserelleAPI --> ServiceMiseEnRelation[Service Compétences & Mise en relation]
-	PasserelleAPI --> ServiceSession[Service Sessions]
-	PasserelleAPI --> ServiceAvis[Service Avis]
-	PasserelleAPI --> ServiceNotification[Service Notifications]
-	ApplicationMobile <-- WebSocket --> ServiceChat[Service Chat temps réel]
-	ServiceNotification --> FournisseurPush[Fournisseur Push et E-mail]
-```
+<img width="2070" height="952" alt="image" src="https://github.com/user-attachments/assets/5e8c604d-2e68-470c-a022-750bb665d523" />
+
 
 #### Diagramme – Modèle de données conceptuel (extrait)
 
-```mermaid
-erDiagram
-	UTILISATEUR ||--o{ COMPETENCE : possede
-	UTILISATEUR ||--o{ SESSION : participe
-	SESSION ||--o{ MESSAGE : contient
-	UTILISATEUR ||--o{ AVIS : evalue
-	UTILISATEUR ||--o{ GROUPE : anime
-	GROUPE ||--o{ TACHE : contient
-	UTILISATEUR ||--o{ BADGE : recoit
+<img width="1947" height="1171" alt="image" src="https://github.com/user-attachments/assets/649fede3-8729-4d53-aabc-c430e308261a" />
 
-	UTILISATEUR {
-		string identifiant_utilisateur
-		string nom
-		string courriel
-		string url_photo
-		string langue_preferee
-		boolean identite_verifiee
-		number reputation
-		number score_fiabilite
-		string[] roles
-	}
-
-	COMPETENCE {
-		string identifiant_competence
-		string identifiant_utilisateur
-		string libelle
-		enum type "ENSEIGNE|APPREND"
-		enum niveau "DEBUTANT|INTERMEDIAIRE|AVANCE"
-		string disponibilite
-	}
-
-	SESSION {
-		string identifiant_session
-		string identifiant_apprenant
-		string identifiant_enseignant
-		datetime debut
-		datetime fin
-		enum statut "PROPOSEE|CONFIRMEE|REALISEE|ANNULEE|ABSENCE"
-		string lieu_ou_lien
-	}
-
-	MESSAGE {
-		string identifiant_message
-		string identifiant_session
-		string identifiant_expediteur
-		string texte
-		string langue
-		datetime cree_le
-	}
-
-	AVIS {
-		string identifiant_avis
-		string identifiant_session
-		string identifiant_emetteur
-		string identifiant_cible
-		number note_etoiles
-		number ponctualite
-		number pedagogie
-		number motivation
-		number communication
-		string commentaire
-		datetime cree_le
-	}
-```
 
 ### 5. Processus de création
 
@@ -197,77 +126,13 @@ erDiagram
 
 #### Diagramme – Architecture MVP (v1.0)
 
-```mermaid
-flowchart LR
-	Application[Application mobile]
-	Passerelle[Passerelle API]
-	ServiceAuth[Service Authentification]
-	ServiceMiseEnRelation[Service Compétences & Mise en relation]
-	ServiceSession[Service Sessions]
-	ServiceChat[Service Chat]
-	ServiceAvis[Service Avis]
-	ServiceNotif[Service Notifications]
-	ServiceAdmin[Service Administration]
+<img width="2461" height="976" alt="image" src="https://github.com/user-attachments/assets/91846fad-2517-4d35-8582-612079785e8b" />
 
-	Application --> Passerelle
-	Passerelle --> ServiceAuth
-	Passerelle --> ServiceMiseEnRelation
-	Passerelle --> ServiceSession
-	Passerelle --> ServiceChat
-	Passerelle --> ServiceAvis
-	Passerelle --> ServiceNotif
-	Passerelle --> ServiceAdmin
-	ServiceSession --> ServiceNotif
-	ServiceAvis --> ServiceSession
-	ServiceChat --> ServiceAuth
-```
 
 #### Diagramme – Vue d’ensemble des évolutions (v1.0 → v2.0)
 
-```mermaid
-flowchart LR
-	subgraph Noyau_v1_0 [MVP v1.0]
-		ServiceAuth
-		ServiceMiseEnRelation
-		ServiceSession
-		ServiceChat
-		ServiceAvis
-		ServiceNotif
-		ServiceAdmin
-	end
+<img width="2463" height="957" alt="image" src="https://github.com/user-attachments/assets/9851b24e-92ac-4a1a-9add-9e21ab96ae58" />
 
-	subgraph Version_1_1 [Version 1.1]
-		ServiceOAuth[Service OAuth & Identité]
-		ServiceFichiers[Service Fichiers]
-		ServiceGamif1[Gamification v1]
-		ServiceTraduction1[Service Traduction]
-		ServiceSignalement[Service Signalement Contenu]
-	end
-
-	subgraph Version_1_2 [Version 1.2]
-		ServiceGroupes[Groupes & Tâches]
-		ServiceGamif2[Gamification v2]
-		ServiceKYC[KYC léger]
-		ServiceHorsLigne[Mode hors ligne]
-		ServiceVideoProfil[Profils Vidéo]
-		ServiceModerationIA[Modération IA]
-	end
-
-	subgraph Version_2_0 [Version 2.0]
-		ServiceClasseVirtuelle[Classe virtuelle]
-		ServiceVocaux[Messages vocaux]
-		ServiceGamif3[Gamification v3]
-		ServiceAbonnements[Abonnements Premium]
-		ServicePaiements[Paiements]
-		ServiceAgentsIA[Agents IA Mentor/Prof/Élève]
-		ServiceTraduction2[Traduction avancée]
-	end
-
-	Application --> Noyau_v1_0
-	Application --> Version_1_1
-	Application --> Version_1_2
-	Application --> Version_2_0
-```
 
 ### 3. Bases de données par service et justification
 
@@ -317,57 +182,8 @@ Ce modèle illustre les grandes entités métiers, leurs relations et les flux d
 
 ##### Diagramme – Vue conceptuelle des entités
 ```mermaid
-erDiagram
-	UTILISATEUR ||--o{ COMPETENCE : possede
-	UTILISATEUR ||--o{ SESSION : planifie
-	UTILISATEUR ||--o{ AVIS : evalue
-	UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
-	UTILISATEUR ||--o{ ABONNEMENT : souscrit
-	UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
-	SESSION ||--o{ MESSAGE : contient
-	SESSION ||--o{ AVIS : genere
-	GROUPE ||--o{ ADHESION_GROUPE : gere
-	GROUPE ||--o{ TACHE : organise
-	ABONNEMENT ||--o{ DROIT_ACCES : accorde
-	INTENTION_PAIEMENT ||--o{ FACTURE : confirme
+<img width="2677" height="838" alt="image" src="https://github.com/user-attachments/assets/e4ae58e9-1ece-4060-8656-a91a9ece630f" />
 
-	UTILISATEUR {
-		string id_utilisateur
-		string nom
-	}
-	COMPETENCE {
-		string id_competence
-		string libelle
-	}
-	SESSION {
-		string id_session
-		datetime debut
-	}
-	MESSAGE {
-		string id_message
-		string texte
-	}
-	AVIS {
-		string id_avis
-		number note
-	}
-	GROUPE {
-		string id_groupe
-		string titre
-	}
-	TACHE {
-		string id_tache
-		string statut
-	}
-	ABONNEMENT {
-		string id_abonnement
-		string formule
-	}
-	INTENTION_PAIEMENT {
-		string id_intention
-		string statut
-	}
-```
 
 ## Modèle Logique de Données (Logical Data Model)
 
@@ -388,123 +204,8 @@ La vue logique précise les attributs structurants, les clés et les dépendance
 | IntentionPaiement | id_utilisateur, montant, devise, statut, créé_le | `id_intention_paiement` | `id_utilisateur → Utilisateur` |
 
 ##### Diagramme – Vue logique des entités et dépendances
-```mermaid
-erDiagram
-    UTILISATEUR {
-        string id_utilisateur PK
-        string courriel UK
-        string langue_preferee
-        string roles
-        int reputation
-        int score_fiabilite
-    }
+<img width="2347" height="1169" alt="image" src="https://github.com/user-attachments/assets/04f2651b-bbe3-49f1-a23a-e6bca3969b9b" />
 
-    COMPETENCE {
-        string id_competence PK
-        string id_utilisateur FK
-        string libelle
-        string type_competence
-        string niveau_competence
-        string disponibilite
-    }
-
-    SESSION {
-        string id_session PK
-        string id_apprenant FK
-        string id_enseignant FK
-        datetime debut
-        datetime fin
-        string statut_session
-        string lieu_ou_lien
-    }
-
-    MESSAGE {
-        string id_message PK
-        string id_session FK
-        string id_expediteur FK
-        string texte
-        string langue
-        datetime cree_le
-    }
-
-    AVIS {
-        string id_avis PK
-        string id_session FK
-        string id_emetteur FK
-        string id_cible FK
-        int note_etoiles
-        int note_ponctualite
-        int note_pedagogie
-        int note_motivation
-        int note_communication
-        string commentaire
-    }
-
-    GROUPE {
-        string id_groupe PK
-        string titre
-        string visibilite
-    }
-
-    ADHESION_GROUPE {
-        string id_adhesion PK
-        string id_groupe FK
-        string id_utilisateur FK
-        string role
-        datetime rejoint_le
-    }
-
-    TACHE {
-        string id_tache PK
-        string id_groupe FK
-        string titre
-        string statut
-        datetime echeance
-    }
-
-    ABONNEMENT {
-        string id_abonnement PK
-        string id_utilisateur FK
-        string formule
-        string statut_abonnement
-        datetime debut
-        datetime fin
-    }
-
-    INTENTION_PAIEMENT {
-        string id_intention_paiement PK
-        string id_utilisateur FK
-        float montant
-        string devise
-        string statut_paiement
-        datetime cree_le
-    }
-
-    FACTURE {
-        string id_facture PK
-        string id_intention_paiement FK
-        string reference_externe
-        float montant
-        string statut_facture
-        datetime emise_le
-    }
-
-    UTILISATEUR ||--o{ COMPETENCE : possede
-    UTILISATEUR ||--o{ SESSION : participe
-    UTILISATEUR ||--o{ AVIS : evalue
-    UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
-    UTILISATEUR ||--o{ ABONNEMENT : souscrit
-    UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
-
-    SESSION ||--o{ MESSAGE : contient
-    SESSION ||--o{ AVIS : genere
-
-    GROUPE ||--o{ ADHESION_GROUPE : gere
-    GROUPE ||--o{ TACHE : planifie
-
-    ABONNEMENT ||--o{ FACTURE : justifie
-    INTENTION_PAIEMENT ||--o{ FACTURE : produit
-```
 ## Modèle Physique de Données (Physical Data Model)
 
 La représentation physique détaille où et comment chaque entité est stockée, ainsi que les index optimisant les opérations critiques.
@@ -518,46 +219,8 @@ La représentation physique détaille où et comment chaque entité est stockée
 | IntentionPaiement, Facture | PostgreSQL (primaire + secours) | `id_utilisateur`, `statut` | Transactions financières cohérentes |
 
 ##### Diagramme – Répartition physique et stockage
-```mermaid
-flowchart TB
-	subgraph MongoDBAtlas[MongoDB Atlas – Réplicat + Sharding]
-		Utilisateur[(Collection UTILISATEUR)]
-		Competence[(Collection COMPETENCE)]
-		Session[(Collection SESSION)]
-		Message[(Collection MESSAGE)]
-		Avis[(Collection AVIS)]
-		Groupe[(Collection GROUPE)]
-		Adhesion[(Collection ADHESION_GROUPE)]
-		Tache[(Collection TACHE)]
-		Abonnement[(Collection ABONNEMENT)]
-	end
+<img width="2606" height="1012" alt="image" src="https://github.com/user-attachments/assets/fd50e636-1059-4594-a0ac-cfd1de4104e7" />
 
-	subgraph ServicesTempsReel[Redis + Socket.io]
-		FluxChat[[Canal pub/sub CHAT]]
-	end
-
-	subgraph PostgreSQLCluster[PostgreSQL – Primaire & Secours]
-		Intention[(Table INTENTION_PAIEMENT)]
-		Facture[(Table FACTURE)]
-		DroitAcces[(Table DROIT_ACCES)]
-	end
-
-	subgraph StockageObjet[S3 / GCS]
-		MediaBucket[[Bucket MEDIA]]
-	end
-
-	Utilisateur --> Competence
-	Utilisateur --> Session
-	Session --> Message
-	Session --> Avis
-	Groupe --> Adhesion
-	Groupe --> Tache
-	Abonnement --> DroitAcces
-	Intention --> Facture
-	Session --> FluxChat
-	MediaBucket -.-> Session
-	MediaBucket -.-> Utilisateur
-```
 | JournalNotification | MongoDB | `(id_utilisateur, envoye_le)` + TTL | Traçabilité et purge automatique |
 | Média | S3 + métadonnées MongoDB | `(id_utilisateur, cree_le)` | Stockage des fichiers volumineux |
 
@@ -694,48 +357,8 @@ flowchart TB
 - read preference `primary` temps réel, `secondary` pour reporting.
 
 ##### Diagramme – Topologie MongoDB en mode actif–actif
-```mermaid
-flowchart TB
-	subgraph Client
-		App
-	end
-	subgraph Routing
-		Mongos1
-		Mongos2
-	end
-	subgraph Config[Config Servers]
-		CS1
-		CS2
-		CS3
-	end
-	subgraph ShardA[Shard A]
-		APrimary((Primary))
-		ASecond1((Secondary))
-		ASecond2((Secondary))
-	end
-	subgraph ShardB[Shard B]
-		BPrimary((Primary))
-		BSecond1((Secondary))
-		BSecond2((Secondary))
-	end
+<img width="2058" height="1108" alt="image" src="https://github.com/user-attachments/assets/f2d2a6c3-e47f-4e0a-b95a-029e892d8b48" />
 
-	App --> Mongos1
-	App --> Mongos2
-	Mongos1 --> APrimary
-	Mongos1 --> BPrimary
-	Mongos2 --> APrimary
-	Mongos2 --> BPrimary
-	Mongos1 --- CS1
-	Mongos1 --- CS2
-	Mongos1 --- CS3
-	Mongos2 --- CS1
-	Mongos2 --- CS2
-	Mongos2 --- CS3
-	APrimary --> ASecond1
-	APrimary --> ASecond2
-	BPrimary --> BSecond1
-	BPrimary --> BSecond2
-```
 
 #### Paiements PostgreSQL — Actif–Passif (primaire + standby synchrone + DR)
 
@@ -751,14 +374,8 @@ flowchart TB
 Ces trois rôles fonctionnent ensemble : le primary sert le trafic normal, le standby synchrone prend le relais automatiquement si le primary devient indisponible, tandis que le nœud de DR assure une copie de secours à froid pour restaurer le service même en cas de catastrophe géographique.
 
 ##### Diagramme – Topologie PostgreSQL en mode actif–passif
-```mermaid
-flowchart LR
-	App --> Proxy[HAProxy/pgbouncer]
-	Proxy --> PrimaryPG[(PostgreSQL Primary)]
-	PrimaryPG ==>|sync| SyncStandby[(Standby synchrone)]
-	PrimaryPG -.->|async| DRStandby[(Standby DR asynchrone)]
-	PrimaryPG -.-> WALArchive[WAL Archive / Backups]
-```
+<img width="2572" height="978" alt="image" src="https://github.com/user-attachments/assets/22fb9f55-01c4-44b2-aed2-d864d9193dfd" />
+
 
 ### 5. Haute disponibilité & gestion des pannes
 
@@ -779,24 +396,7 @@ flowchart LR
 ### 7. Schémas de distribution & reprise
 
 ##### Diagramme – Chaîne d’écriture et de réplication
-```mermaid
-sequenceDiagram
-	participant Utilisateur
-	participant API
-	participant FragmentMongoA as Fragment Mongo A
-	participant FragmentMongoB as Fragment Mongo B
-	participant PGPrimaire as PostgreSQL primaire
-	participant PGSynchro as Standby synchrone
-	participant PGSecours as Réplique DR
+<img width="2686" height="832" alt="image" src="https://github.com/user-attachments/assets/661dadca-1e9d-46c9-b83d-a2024918cecb" />
 
-	Utilisateur->>API: Crée une session et un paiement
-	API->>FragmentMongoA: Enregistre la session (écriture confirmée par plusieurs nœuds)
-	API->>FragmentMongoB: Ajoute le message (validation rapide sur le nœud principal)
-	API->>PGPrimaire: Crée l’intention de paiement (écriture synchrone)
-	PGPrimaire-->>PGSynchro: Copie immédiate du journal WAL
-	PGPrimaire-->>PGSecours: Copie différée du journal WAL
-	FragmentMongoA-->>FragmentMongoA: Réplication vers les serveurs secondaires
-	FragmentMongoB-->>FragmentMongoB: Réplication vers les serveurs secondaires
-```
 
 ---
