@@ -560,7 +560,7 @@ flowchart TB
 
 ---
 
-## Glossaire des technologies et méthodes
+<!-- ## Glossaire des technologies et méthodes
 
 - **React Native :** framework mobile basé sur JavaScript qui permet de créer la même application pour iOS et Android.  
 - **Expo :** environnement clé en main qui simplifie le lancement, le test et la publication d’une application React Native.  
@@ -633,7 +633,7 @@ flowchart TB
 - **Plan de reprise après sinistre :** stratégie qui détaille comment redémarrer le service après un incident majeur.  
 - **Périmètre RGPD :** ensemble des engagements pris pour respecter la législation européenne sur les données.
 
----
+--- -->
 
 ## Phase 3 – Database Cluster (TP3)
 
