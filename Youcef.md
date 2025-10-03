@@ -112,6 +112,296 @@ erDiagram
 	}
 ```
 
+#### Diagramme – Cas d'utilisation global
+
+```mermaid
+usecaseDiagram
+	actor Apprenant
+	actor Enseignant
+	actor "Mentor IA" as MentorIA
+	actor Administrateur
+	actor "Partenaire Paiement" as PartenairePaiement
+
+	Apprenant --> (Explorer catalogue de compétences)
+	Apprenant --> (Demander une session)
+	Apprenant --> (Discuter via chat)
+	Apprenant --> (Évaluer une session)
+	Apprenant --> (Gérer abonnement)
+
+	Enseignant --> (Publier ses compétences)
+	Enseignant --> (Accepter une session)
+	Enseignant --> (Envoyer ressources)
+	Enseignant --> (Recevoir feedback)
+
+	MentorIA --> (Recommander parcours)
+	MentorIA --> (Analyser progression)
+	MentorIA --> (Proposer activités)
+
+	Administrateur --> (Modérer plateforme)
+	Administrateur --> (Gérer signalements)
+	Administrateur --> (Superviser indicateurs)
+
+	PartenairePaiement --> (Traiter paiements)
+	PartenairePaiement --> (Notifier statuts)
+```
+
+##### Acteurs principaux et responsabilités
+
+- **Apprenant :** recherche des compétences, planifie et suit ses sessions, donne un feedback.
+- **Enseignant :** publie son offre, confirme les sessions, partage du contenu et suit sa réputation.
+- **Mentor IA :** accompagne les apprenants avec des recommandations et des synthèses personnalisées.
+- **Administrateur :** modère l’écosystème, gère les signalements et suit les métriques de qualité.
+- **Partenaires externes :** services de paiement et de notifications fiables (paiements sécurisés, suivi des statuts).
+
+##### Diagramme – Cas d'utilisation Apprenant
+
+```mermaid
+usecaseDiagram
+	actor Apprenant
+
+	Apprenant --> (Créer/mettre à jour son profil)
+	Apprenant --> (Explorer les compétences disponibles)
+	Apprenant --> (Filtrer par langue/niveau)
+	Apprenant --> (Contacter un enseignant)
+	Apprenant --> (Planifier une session)
+	Apprenant --> (Participer à une session)
+	Apprenant --> (Donner un avis détaillé)
+	Apprenant --> (Suivre son parcours recommandé)
+	Apprenant --> (Gérer son abonnement)
+```
+
+##### Diagramme – Cas d'utilisation Enseignant
+
+```mermaid
+usecaseDiagram
+	actor Enseignant
+
+	Enseignant --> (Créer son profil enseignant)
+	Enseignant --> (Publier ses compétences)
+	Enseignant --> (Définir ses disponibilités)
+	Enseignant --> (Répondre aux demandes)
+	Enseignant --> (Animer une session)
+	Enseignant --> (Partager des ressources)
+	Enseignant --> (Consulter ses évaluations)
+	Enseignant --> (Optimiser sa réputation)
+```
+
+##### Diagramme – Cas d'utilisation Mentor IA
+
+```mermaid
+usecaseDiagram
+	actor "Mentor IA" as MentorIA
+
+	MentorIA --> (Analyser les objectifs de l'apprenant)
+	MentorIA --> (Concevoir un parcours personnalisé)
+	MentorIA --> (Envoyer des rappels intelligents)
+	MentorIA --> (Synthétiser les progrès)
+	MentorIA --> (Suggérer des ressources complémentaires)
+```
+
+##### Diagramme – Cas d'utilisation Administrateur
+
+```mermaid
+usecaseDiagram
+	actor Administrateur
+
+	Administrateur --> (Superviser les signalements)
+	Administrateur --> (Valider les certifications)
+	Administrateur --> (Gérer les rôles et accès)
+	Administrateur --> (Analyser la qualité du service)
+	Administrateur --> (Déclencher des actions de modération)
+	Administrateur --> (Piloter les campagnes de notifications)
+```
+
+##### Diagramme – Classe globale de l'application
+
+```mermaid
+classDiagram
+	class Utilisateur {
+		+string id
+		+string nom
+		+string courriel
+		+string languePreferee
+		+bool identiteVerifiee
+		+float reputation
+		+float scoreFiabilite
+		+string[] roles
+	}
+
+	class Competence {
+		+string id
+		+string libelle
+		+TypeCompetence type
+		+NiveauCompetence niveau
+		+string disponibilite
+	}
+
+	class Session {
+		+string id
+		+datetime debut
+		+datetime fin
+		+StatutSession statut
+		+string lieuOuLien
+	}
+
+	class Message {
+		+string id
+		+string texte
+		+string langue
+		+datetime creeLe
+		+MediaPieceJointe pieceJointe
+	}
+
+	class Avis {
+		+string id
+		+int noteEtoiles
+		+int ponctualite
+		+int pedagogie
+		+int motivation
+		+int communication
+		+string commentaire
+		+datetime creeLe
+	}
+
+	class Groupe {
+		+string id
+		+string titre
+		+Visibilite visibilite
+		+datetime creeLe
+	}
+
+	class Tache {
+		+string id
+		+string titre
+		+StatutTache statut
+		+datetime echeance
+	}
+
+	class Abonnement {
+		+string id
+		+Formule formule
+		+StatutAbonnement statut
+		+datetime debut
+		+datetime fin
+	}
+
+	class IntentionPaiement {
+		+string id
+		+float montant
+		+string devise
+		+StatutPaiement statut
+		+datetime creeLe
+	}
+
+	class Notification {
+		+string id
+		+TypeNotification type
+		+string canal
+		+datetime envoyeLe
+		+StatutNotification statut
+	}
+
+	class Media {
+		+string id
+		+string url
+		+TypeMedia type
+		+int tailleKo
+		+datetime creeLe
+	}
+
+	class PlanApprentissage {
+		+string id
+		+string objectif
+		+string horizon
+		+Progression progression
+	}
+
+	Utilisateur "1" --> "*" Competence : possede
+	Utilisateur "1" --> "*" Session : planifie/enseigne
+	Utilisateur "1" --> "*" Message : envoie
+	Utilisateur "1" --> "*" Avis : emet
+	Utilisateur "1" --> "*" Abonnement : souscrit
+	Utilisateur "1" --> "*" PlanApprentissage : suit
+	Utilisateur "1" --> "*" Media : publie
+
+	Session "1" --> "*" Message : contient
+	Session "1" --> "*" Avis : genere
+	Session "*" --> "1" IntentionPaiement : associePaiement
+	Session "1" --> "*" Notification : pilotage
+
+	Groupe "1" --> "*" Tache : organise
+	Groupe "1" --> "*" Notification : diffuse
+```
+
+##### Diagrammes de séquence
+
+###### Séquence – Mise en relation et planification d'une session
+
+```mermaid
+sequenceDiagram
+	actor Apprenant
+	participant Mobile as Application Mobile
+	participant Match as Service MiseEnRelation
+	participant Enseignant
+	participant SessionSvc as Service Sessions
+	participant Notif as Service Notifications
+
+	Apprenant->>Mobile: Rechercher une compétence
+	Mobile->>Match: Requête filtrée (type, langue, niveau)
+	Match-->>Mobile: Liste de profils recommandés
+	Apprenant->>Mobile: Demande de session
+	Mobile->>SessionSvc: Création session (apprenant, enseignant, créneau)
+	SessionSvc->>Enseignant: Notification de demande
+	Enseignant-->>SessionSvc: Confirmation du créneau
+	SessionSvc->>Notif: Générer rappels (push + email)
+	Notif-->>Apprenant: Rappel session confirmée
+	Notif-->>Enseignant: Rappel session confirmée
+```
+
+###### Séquence – Parcours mentoré par l'IA
+
+```mermaid
+sequenceDiagram
+	actor Apprenant
+	participant Mobile as Application Mobile
+	participant MentorIA
+	participant SessionSvc as Service Sessions
+	participant Analytics as Service Statistiques
+
+	Apprenant->>Mobile: Demander un plan personnalisé
+	Mobile->>MentorIA: Objectifs, disponibilités, préférences
+	MentorIA->>Analytics: Obtenir historique de progression
+	Analytics-->>MentorIA: Metrics sessions, feedback, badges
+	MentorIA-->>Mobile: Parcours d'apprentissage proposé
+	Mobile-->>Apprenant: Afficher plan (sessions, activités, rappels)
+	MentorIA->>SessionSvc: Proposer créneaux recommandés
+	SessionSvc-->>Mobile: Slots disponibles alignés
+	Apprenant->>Mobile: Confirme premier créneau
+```
+
+###### Séquence – Gestion d'un signalement de contenu
+
+```mermaid
+sequenceDiagram
+	actor Utilisateur
+	participant Mobile as Application Mobile
+	participant Signalement as Service Signalement
+	participant Moderation as Administration & Modération
+	participant Notif as Service Notifications
+
+	Utilisateur->>Mobile: Signaler un contenu
+	Mobile->>Signalement: Soumettre le ticket (type, description, preuves)
+	Signalement->>Moderation: Créer dossier et notifier l'équipe
+	Moderation-->>Signalement: Analyse et décision (maintenir/bannir)
+	alt Contenu valide
+		Moderation->>Notif: Informer l'auteur et le plaignant
+	else Contenu non conforme
+		Moderation->>Notif: Suspendre contenu + alerter administrateurs
+		Moderation->>ServiceSessions: Bloquer les futures sessions du fautif
+	end
+	Notif-->>Utilisateur: Statut du signalement
+```
+
 ### 5. Processus de création
 
 #### Conception
@@ -762,11 +1052,41 @@ flowchart LR
 
 ### 5. Haute disponibilité & gestion des pannes
 
-- **MongoDB :** élections automatiques <15 s, reroutage `mongos`, réplication cross-AZ, sharding limitant l’impact à un shard ; tests de bascule réguliers.  
-- **PostgreSQL :** Patroni (outil qui surveille et promeut automatiquement la réplique synchrone), RPO≈0 local (aucune perte de données car chaque écriture est confirmée des deux côtés), plan DR régional (copie de secours dans une autre région), runbooks de bascule (checklists pour changer de serveur sans stress) et procédures PITR (restauration à un instant précis grâce aux journaux).  
-- **Backups :** snapshots quotidiens + PITR (MongoDB Ops Manager/Atlas, WAL PostgreSQL).  
-- **Monitoring :** alertes sur latence, replication lag, élections, erreurs WAL, saturation storage.  
-- **Security/Compliance :** chiffrement au repos (KMS), audits, rotation clés, tests DR.
+#### 5.1 Stratégies de haute disponibilité
+
+- **MongoDB (domaine social) :**
+	- Replica sets sur chaque shard avec répartition cross-AZ et élections automatiques <15 s ;
+	- `mongos` redondants derrière un DNS round-robin et un health-check Kubernetes/VM pour rerouter instantanément le trafic ;
+	- Sharding fonctionnel (`users+skills`, `sessions+messages`, `groups+gamification`) afin de limiter l’impact d’un incident à une partie du domaine métier ;
+	- Politique `writeConcern` différenciée (majority pour données critiques, `w:1` pour chat) pour équilibrer disponibilité et latence ;
+	- Tests trimestriels de failover automatique et exercices de bascule manuelle documentés.
+- **PostgreSQL (paiements) :**
+	- Couple primaire + standby synchrone via Patroni et HAProxy/pgbouncer pour un basculement <2 min ;
+	- Réplique DR asynchrone hors région couplée à l’archivage WAL (S3) afin de garantir un RPO ≤ 15 min en scénario catastrophe ;
+	- Partitionnement logique par période pour isoler les charges de reporting et conserver des performances constantes ;
+	- Maintenance préventive (vacuum, auto-analyse, patching de sécurité) planifiée par fenêtre de maintenance et contrôlée par scripts Ansible.
+- **Couche transverse :**
+	- Sauvegardes incrémentales quotidiennes + full hebdomadaire, validées par restaurations test ;
+	- Supervision Prometheus/Grafana avec alertes PagerDuty sur latence, `replication_lag`, saturation disque et erreurs WAL ;
+	- Secrets et certificats gérés via Vault/KMS avec rotation automatique et alertes d’expiration ;
+	- Plans de capacité (auto-scaling horizontal + alertes d’anticipation) afin d’éviter la saturation d’un shard.
+
+#### 5.2 Gestion des défaillances de nœud
+
+**MongoDB :**
+1. Détection : Prometheus et l’agent Ops Manager déclenchent une alerte lorsque le heartbeat d’un nœud tombe à zéro ou que le temps de réponse dépasse 2 s.  
+2. Isolement : le nœud est marqué `down` par le replica set ; `mongos` cesse de router les requêtes vers lui.  
+3. Continuité : une élection élit un nouveau primary en <15 s ; les clients configurés en `retryable writes` rejouent les écritures interrompues.  
+4. Remédiation : runbook SRE → diagnostic (logs, métriques), redémarrage contrôlé, puis réintégration du nœud via `rs.add()` et resynchronisation initiale.  
+5. Post-mortem : analyse des causes, mise à jour du runbook et ticket Jira pour toute action long terme.
+
+**PostgreSQL :**
+1. Détection : Patroni observe le heartbeat ; en cas de perte, il déclenche immédiatement le mécanisme de failover.  
+2. Promotion : la réplique synchrone est promue primary, HAProxy/pgbouncer bascule ses connexions, et un verrouillage applicatif léger s’assure qu’aucune écriture n’est perdue.  
+3. Notification : une alerte PagerDuty et un message Slack informent l’équipe ; les dashboards Grafana passent en mode incident.  
+4. Restauration : l’ancien primary est soit réintégré en standby (rebuild via `pg_basebackup`), soit isolé pour analyse ; si l’incident est régional, la réplique DR est promue manuellement après validation.  
+5. Vérifications : exécution d’un plan de smoke tests applicatifs, contrôle de l’intégrité via checksums et exécution d’un mini-inventaire de transactions.  
+6. Documentation : création d’un rapport de panne, mise à jour des runbooks et planification des actions correctives (patch, dimensionnement, optimisation réseau).
 
 ### 6. Rapport technique (résumé)
 
