@@ -33,13 +33,428 @@ Document de synthèse couvrant la conception applicative (TP1), l’architecture
 
 #### Diagramme – Flux applicatif MVP
 
-<img width="2070" height="952" alt="image" src="https://github.com/user-attachments/assets/5e8c604d-2e68-470c-a022-750bb665d523" />
-
+```mermaid
+flowchart LR
+	ApplicationMobile[Application mobile] -- HTTPS/JSON --> PasserelleAPI[Passerelle API\nExpress]
+	PasserelleAPI --> ServiceAuth[Service Authentification & Utilisateurs]
+	PasserelleAPI --> ServiceMiseEnRelation[Service Compétences & Mise en relation]
+	PasserelleAPI --> ServiceSession[Service Sessions]
+	PasserelleAPI --> ServiceAvis[Service Avis]
+	PasserelleAPI --> ServiceNotification[Service Notifications]
+	ApplicationMobile <-- WebSocket --> ServiceChat[Service Chat temps réel]
+	ServiceNotification --> FournisseurPush[Fournisseur Push et E-mail]
+```
 
 #### Diagramme – Modèle de données conceptuel (extrait)
 
-<img width="1947" height="1171" alt="image" src="https://github.com/user-attachments/assets/649fede3-8729-4d53-aabc-c430e308261a" />
+```mermaid
+erDiagram
+	UTILISATEUR ||--o{ COMPETENCE : possede
+	UTILISATEUR ||--o{ SESSION : participe
+	SESSION ||--o{ MESSAGE : contient
+	UTILISATEUR ||--o{ AVIS : evalue
+	UTILISATEUR ||--o{ GROUPE : anime
+	GROUPE ||--o{ TACHE : contient
+	UTILISATEUR ||--o{ BADGE : recoit
 
+	UTILISATEUR {
+		string identifiant_utilisateur
+		string nom
+		string courriel
+		string url_photo
+		string langue_preferee
+		boolean identite_verifiee
+		number reputation
+		number score_fiabilite
+		string[] roles
+	}
+
+	COMPETENCE {
+		string identifiant_competence
+		string identifiant_utilisateur
+		string libelle
+		enum type "ENSEIGNE|APPREND"
+		enum niveau "DEBUTANT|INTERMEDIAIRE|AVANCE"
+		string disponibilite
+	}
+
+	SESSION {
+		string identifiant_session
+		string identifiant_apprenant
+		string identifiant_enseignant
+		datetime debut
+		datetime fin
+		enum statut "PROPOSEE|CONFIRMEE|REALISEE|ANNULEE|ABSENCE"
+		string lieu_ou_lien
+	}
+
+	MESSAGE {
+		string identifiant_message
+		string identifiant_session
+		string identifiant_expediteur
+		string texte
+		string langue
+		datetime cree_le
+	}
+
+	AVIS {
+		string identifiant_avis
+		string identifiant_session
+		string identifiant_emetteur
+		string identifiant_cible
+		number note_etoiles
+		number ponctualite
+		number pedagogie
+		number motivation
+		number communication
+		string commentaire
+		datetime cree_le
+	}
+```
+
+#### Diagramme – Cas d'utilisation global
+
+```mermaid
+flowchart TB
+	actorApprenant((Apprenant))
+	actorEnseignant((Enseignant))
+	actorMentorIA((Mentor IA))
+	actorAdmin((Administrateur))
+	actorPaiement((Partenaire Paiement))
+
+	ucCatalogue((Explorer le catalogue de compétences))
+	ucSessionDemande((Demander une session))
+	ucChat((Discuter via le chat))
+	ucEvaluation((Évaluer une session))
+	ucAbonnement((Gérer son abonnement))
+
+	ucPublier((Publier ses compétences))
+	ucAccepter((Accepter une session))
+	ucRessources((Envoyer des ressources))
+	ucFeedback((Recevoir du feedback))
+
+	ucReco((Recommander des parcours))
+	ucAnalyse((Analyser la progression))
+	ucActivites((Proposer des activités))
+
+	ucModeration((Modérer la plateforme))
+	ucSignalements((Gérer les signalements))
+	ucIndicateurs((Superviser les indicateurs))
+
+	ucPaiement((Traiter les paiements))
+	ucStatut((Notifier les statuts de paiement))
+
+	actorApprenant --> ucCatalogue
+	actorApprenant --> ucSessionDemande
+	actorApprenant --> ucChat
+	actorApprenant --> ucEvaluation
+	actorApprenant --> ucAbonnement
+
+	actorEnseignant --> ucPublier
+	actorEnseignant --> ucAccepter
+	actorEnseignant --> ucRessources
+	actorEnseignant --> ucFeedback
+
+	actorMentorIA --> ucReco
+	actorMentorIA --> ucAnalyse
+	actorMentorIA --> ucActivites
+
+	actorAdmin --> ucModeration
+	actorAdmin --> ucSignalements
+	actorAdmin --> ucIndicateurs
+
+	actorPaiement --> ucPaiement
+	actorPaiement --> ucStatut
+```
+
+##### Acteurs principaux et responsabilités
+
+- **Apprenant :** recherche des compétences, planifie et suit ses sessions, donne un feedback.
+- **Enseignant :** publie son offre, confirme les sessions, partage du contenu et suit sa réputation.
+- **Mentor IA :** accompagne les apprenants avec des recommandations et des synthèses personnalisées.
+- **Administrateur :** modère l’écosystème, gère les signalements et suit les métriques de qualité.
+- **Partenaires externes :** services de paiement et de notifications fiables (paiements sécurisés, suivi des statuts).
+
+##### Diagramme – Cas d'utilisation Apprenant
+
+```mermaid
+flowchart TB
+	actorApprenant((Apprenant))
+
+	ucProfil((Créer ou mettre à jour son profil))
+	ucExplorer((Explorer les compétences disponibles))
+	ucFiltrer((Filtrer par langue ou niveau))
+	ucContacter((Contacter un enseignant))
+	ucPlanifier((Planifier une session))
+	ucParticiper((Participer à une session))
+	ucAvis((Donner un avis détaillé))
+	ucParcours((Suivre un parcours recommandé))
+	ucGestionAbonnement((Gérer son abonnement))
+
+	actorApprenant --> ucProfil
+	actorApprenant --> ucExplorer
+	actorApprenant --> ucFiltrer
+	actorApprenant --> ucContacter
+	actorApprenant --> ucPlanifier
+	actorApprenant --> ucParticiper
+	actorApprenant --> ucAvis
+	actorApprenant --> ucParcours
+	actorApprenant --> ucGestionAbonnement
+```
+
+##### Diagramme – Cas d'utilisation Enseignant
+
+```mermaid
+flowchart TB
+	actorEnseignant((Enseignant))
+
+	ucProfilEns((Créer son profil enseignant))
+	ucPublierEns((Publier ses compétences))
+	ucDisponibilites((Définir ses disponibilités))
+	ucRepondre((Répondre aux demandes))
+	ucAnimer((Animer une session))
+	ucPartager((Partager des ressources))
+	ucEvalEns((Consulter ses évaluations))
+	ucReputation((Optimiser sa réputation))
+
+	actorEnseignant --> ucProfilEns
+	actorEnseignant --> ucPublierEns
+	actorEnseignant --> ucDisponibilites
+	actorEnseignant --> ucRepondre
+	actorEnseignant --> ucAnimer
+	actorEnseignant --> ucPartager
+	actorEnseignant --> ucEvalEns
+	actorEnseignant --> ucReputation
+```
+
+##### Diagramme – Cas d'utilisation Mentor IA
+
+```mermaid
+flowchart TB
+	actorMentorIA((Mentor IA))
+
+	ucAnalyserObjectifs((Analyser les objectifs de l'apprenant))
+	ucParcoursIA((Concevoir un parcours personnalisé))
+	ucRappels((Envoyer des rappels intelligents))
+	ucSynthese((Synthétiser les progrès))
+	ucRessources((Suggérer des ressources complémentaires))
+
+	actorMentorIA --> ucAnalyserObjectifs
+	actorMentorIA --> ucParcoursIA
+	actorMentorIA --> ucRappels
+	actorMentorIA --> ucSynthese
+	actorMentorIA --> ucRessources
+```
+
+##### Diagramme – Cas d'utilisation Administrateur
+
+```mermaid
+flowchart TB
+	actorAdmin((Administrateur))
+
+	ucSuperviser((Superviser les signalements))
+	ucValider((Valider les certifications))
+	ucRoles((Gérer les rôles et accès))
+	ucQualite((Analyser la qualité de service))
+	ucModeration((Déclencher des actions de modération))
+	ucCampagnes((Piloter les campagnes de notifications))
+
+	actorAdmin --> ucSuperviser
+	actorAdmin --> ucValider
+	actorAdmin --> ucRoles
+	actorAdmin --> ucQualite
+	actorAdmin --> ucModeration
+	actorAdmin --> ucCampagnes
+```
+
+##### Diagramme – Classe globale de l'application
+
+```mermaid
+classDiagram
+	class Utilisateur {
+		+string id
+		+string nom
+		+string courriel
+		+string languePreferee
+		+bool identiteVerifiee
+		+float reputation
+		+float scoreFiabilite
+		+string[] roles
+	}
+
+	class Competence {
+		+string id
+		+string libelle
+		+TypeCompetence type
+		+NiveauCompetence niveau
+		+string disponibilite
+	}
+
+	class Session {
+		+string id
+		+datetime debut
+		+datetime fin
+		+StatutSession statut
+		+string lieuOuLien
+	}
+
+	class Message {
+		+string id
+		+string texte
+		+string langue
+		+datetime creeLe
+		+MediaPieceJointe pieceJointe
+	}
+
+	class Avis {
+		+string id
+		+int noteEtoiles
+		+int ponctualite
+		+int pedagogie
+		+int motivation
+		+int communication
+		+string commentaire
+		+datetime creeLe
+	}
+
+	class Groupe {
+		+string id
+		+string titre
+		+Visibilite visibilite
+		+datetime creeLe
+	}
+
+	class Tache {
+		+string id
+		+string titre
+		+StatutTache statut
+		+datetime echeance
+	}
+
+	class Abonnement {
+		+string id
+		+Formule formule
+		+StatutAbonnement statut
+		+datetime debut
+		+datetime fin
+	}
+
+	class IntentionPaiement {
+		+string id
+		+float montant
+		+string devise
+		+StatutPaiement statut
+		+datetime creeLe
+	}
+
+	class Notification {
+		+string id
+		+TypeNotification type
+		+string canal
+		+datetime envoyeLe
+		+StatutNotification statut
+	}
+
+	class Media {
+		+string id
+		+string url
+		+TypeMedia type
+		+int tailleKo
+		+datetime creeLe
+	}
+
+	class PlanApprentissage {
+		+string id
+		+string objectif
+		+string horizon
+		+Progression progression
+	}
+
+	Utilisateur "1" --> "*" Competence : possede
+	Utilisateur "1" --> "*" Session : planifie/enseigne
+	Utilisateur "1" --> "*" Message : envoie
+	Utilisateur "1" --> "*" Avis : emet
+	Utilisateur "1" --> "*" Abonnement : souscrit
+	Utilisateur "1" --> "*" PlanApprentissage : suit
+	Utilisateur "1" --> "*" Media : publie
+
+	Session "1" --> "*" Message : contient
+	Session "1" --> "*" Avis : genere
+	Session "*" --> "1" IntentionPaiement : associePaiement
+	Session "1" --> "*" Notification : pilotage
+
+	Groupe "1" --> "*" Tache : organise
+	Groupe "1" --> "*" Notification : diffuse
+```
+
+##### Diagrammes de séquence
+
+###### Séquence – Mise en relation et planification d'une session
+
+```mermaid
+sequenceDiagram
+	actor Apprenant
+	participant Mobile as Application Mobile
+	participant Match as Service MiseEnRelation
+	participant Enseignant
+	participant SessionSvc as Service Sessions
+	participant Notif as Service Notifications
+
+	Apprenant->>Mobile: Rechercher une compétence
+	Mobile->>Match: Requête filtrée (type, langue, niveau)
+	Match-->>Mobile: Liste de profils recommandés
+	Apprenant->>Mobile: Demande de session
+	Mobile->>SessionSvc: Création session (apprenant, enseignant, créneau)
+	SessionSvc->>Enseignant: Notification de demande
+	Enseignant-->>SessionSvc: Confirmation du créneau
+	SessionSvc->>Notif: Générer rappels (push + email)
+	Notif-->>Apprenant: Rappel session confirmée
+	Notif-->>Enseignant: Rappel session confirmée
+```
+
+###### Séquence – Parcours mentoré par l'IA
+
+```mermaid
+sequenceDiagram
+	actor Apprenant
+	participant Mobile as Application Mobile
+	participant MentorIA
+	participant SessionSvc as Service Sessions
+	participant Analytics as Service Statistiques
+
+	Apprenant->>Mobile: Demander un plan personnalisé
+	Mobile->>MentorIA: Objectifs, disponibilités, préférences
+	MentorIA->>Analytics: Obtenir historique de progression
+	Analytics-->>MentorIA: Metrics sessions, feedback, badges
+	MentorIA-->>Mobile: Parcours d'apprentissage proposé
+	Mobile-->>Apprenant: Afficher plan (sessions, activités, rappels)
+	MentorIA->>SessionSvc: Proposer créneaux recommandés
+	SessionSvc-->>Mobile: Slots disponibles alignés
+	Apprenant->>Mobile: Confirme premier créneau
+```
+
+###### Séquence – Gestion d'un signalement de contenu
+
+```mermaid
+sequenceDiagram
+	actor Utilisateur
+	participant Mobile as Application Mobile
+	participant Signalement as Service Signalement
+	participant Moderation as Administration & Modération
+	participant Notif as Service Notifications
+
+	Utilisateur->>Mobile: Signaler un contenu
+	Mobile->>Signalement: Soumettre le ticket (type, description, preuves)
+	Signalement->>Moderation: Créer dossier et notifier l'équipe
+	Moderation-->>Signalement: Analyse et décision (maintenir/bannir)
+	alt Contenu valide
+		Moderation->>Notif: Informer l'auteur et le plaignant
+	else Contenu non conforme
+		Moderation->>Notif: Suspendre contenu + alerter administrateurs
+		Moderation->>ServiceSessions: Bloquer les futures sessions du fautif
+	end
+	Notif-->>Utilisateur: Statut du signalement
+```
 
 ### 5. Processus de création
 
@@ -126,13 +541,77 @@ Document de synthèse couvrant la conception applicative (TP1), l’architecture
 
 #### Diagramme – Architecture MVP (v1.0)
 
-<img width="2461" height="976" alt="image" src="https://github.com/user-attachments/assets/91846fad-2517-4d35-8582-612079785e8b" />
+```mermaid
+flowchart LR
+	Application[Application mobile]
+	Passerelle[Passerelle API]
+	ServiceAuth[Service Authentification]
+	ServiceMiseEnRelation[Service Compétences & Mise en relation]
+	ServiceSession[Service Sessions]
+	ServiceChat[Service Chat]
+	ServiceAvis[Service Avis]
+	ServiceNotif[Service Notifications]
+	ServiceAdmin[Service Administration]
 
+	Application --> Passerelle
+	Passerelle --> ServiceAuth
+	Passerelle --> ServiceMiseEnRelation
+	Passerelle --> ServiceSession
+	Passerelle --> ServiceChat
+	Passerelle --> ServiceAvis
+	Passerelle --> ServiceNotif
+	Passerelle --> ServiceAdmin
+	ServiceSession --> ServiceNotif
+	ServiceAvis --> ServiceSession
+	ServiceChat --> ServiceAuth
+```
 
 #### Diagramme – Vue d’ensemble des évolutions (v1.0 → v2.0)
 
-<img width="2463" height="957" alt="image" src="https://github.com/user-attachments/assets/9851b24e-92ac-4a1a-9add-9e21ab96ae58" />
+```mermaid
+flowchart LR
+	subgraph Noyau_v1_0 [MVP v1.0]
+		ServiceAuth
+		ServiceMiseEnRelation
+		ServiceSession
+		ServiceChat
+		ServiceAvis
+		ServiceNotif
+		ServiceAdmin
+	end
 
+	subgraph Version_1_1 [Version 1.1]
+		ServiceOAuth[Service OAuth & Identité]
+		ServiceFichiers[Service Fichiers]
+		ServiceGamif1[Gamification v1]
+		ServiceTraduction1[Service Traduction]
+		ServiceSignalement[Service Signalement Contenu]
+	end
+
+	subgraph Version_1_2 [Version 1.2]
+		ServiceGroupes[Groupes & Tâches]
+		ServiceGamif2[Gamification v2]
+		ServiceKYC[KYC léger]
+		ServiceHorsLigne[Mode hors ligne]
+		ServiceVideoProfil[Profils Vidéo]
+		ServiceModerationIA[Modération IA]
+	end
+
+	subgraph Version_2_0 [Version 2.0]
+		ServiceClasseVirtuelle[Classe virtuelle]
+		ServiceVocaux[Messages vocaux]
+		ServiceGamif3[Gamification v3]
+		ServiceAbonnements[Abonnements Premium]
+		ServicePaiements[Paiements]
+		ServiceAgentsIA[Agents IA Mentor/Prof/Élève]
+		ServiceTraduction2[Traduction avancée]
+	end
+
+	Application --> Noyau_v1_0
+	Application --> Version_1_1
+	Application --> Version_1_2
+	Application --> Version_2_0
+```
 
 ### 3. Bases de données par service et justification
 
@@ -181,9 +660,58 @@ Document de synthèse couvrant la conception applicative (TP1), l’architecture
 Ce modèle illustre les grandes entités métiers, leurs relations et les flux d’information indispensables pour soutenir les parcours apprenant ↔ enseignant.
 
 ##### Diagramme – Vue conceptuelle des entités
+```mermaid
+erDiagram
+	UTILISATEUR ||--o{ COMPETENCE : possede
+	UTILISATEUR ||--o{ SESSION : planifie
+	UTILISATEUR ||--o{ AVIS : evalue
+	UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
+	UTILISATEUR ||--o{ ABONNEMENT : souscrit
+	UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
+	SESSION ||--o{ MESSAGE : contient
+	SESSION ||--o{ AVIS : genere
+	GROUPE ||--o{ ADHESION_GROUPE : gere
+	GROUPE ||--o{ TACHE : organise
+	ABONNEMENT ||--o{ DROIT_ACCES : accorde
+	INTENTION_PAIEMENT ||--o{ FACTURE : confirme
 
-<img width="2677" height="838" alt="image" src="https://github.com/user-attachments/assets/e4ae58e9-1ece-4060-8656-a91a9ece630f" />
-
+	UTILISATEUR {
+		string id_utilisateur
+		string nom
+	}
+	COMPETENCE {
+		string id_competence
+		string libelle
+	}
+	SESSION {
+		string id_session
+		datetime debut
+	}
+	MESSAGE {
+		string id_message
+		string texte
+	}
+	AVIS {
+		string id_avis
+		number note
+	}
+	GROUPE {
+		string id_groupe
+		string titre
+	}
+	TACHE {
+		string id_tache
+		string statut
+	}
+	ABONNEMENT {
+		string id_abonnement
+		string formule
+	}
+	INTENTION_PAIEMENT {
+		string id_intention
+		string statut
+	}
+```
 
 ## Modèle Logique de Données (Logical Data Model)
 
@@ -204,8 +732,123 @@ La vue logique précise les attributs structurants, les clés et les dépendance
 | IntentionPaiement | id_utilisateur, montant, devise, statut, créé_le | `id_intention_paiement` | `id_utilisateur → Utilisateur` |
 
 ##### Diagramme – Vue logique des entités et dépendances
-<img width="2347" height="1169" alt="image" src="https://github.com/user-attachments/assets/04f2651b-bbe3-49f1-a23a-e6bca3969b9b" />
+```mermaid
+erDiagram
+    UTILISATEUR {
+        string id_utilisateur PK
+        string courriel UK
+        string langue_preferee
+        string roles
+        int reputation
+        int score_fiabilite
+    }
 
+    COMPETENCE {
+        string id_competence PK
+        string id_utilisateur FK
+        string libelle
+        string type_competence
+        string niveau_competence
+        string disponibilite
+    }
+
+    SESSION {
+        string id_session PK
+        string id_apprenant FK
+        string id_enseignant FK
+        datetime debut
+        datetime fin
+        string statut_session
+        string lieu_ou_lien
+    }
+
+    MESSAGE {
+        string id_message PK
+        string id_session FK
+        string id_expediteur FK
+        string texte
+        string langue
+        datetime cree_le
+    }
+
+    AVIS {
+        string id_avis PK
+        string id_session FK
+        string id_emetteur FK
+        string id_cible FK
+        int note_etoiles
+        int note_ponctualite
+        int note_pedagogie
+        int note_motivation
+        int note_communication
+        string commentaire
+    }
+
+    GROUPE {
+        string id_groupe PK
+        string titre
+        string visibilite
+    }
+
+    ADHESION_GROUPE {
+        string id_adhesion PK
+        string id_groupe FK
+        string id_utilisateur FK
+        string role
+        datetime rejoint_le
+    }
+
+    TACHE {
+        string id_tache PK
+        string id_groupe FK
+        string titre
+        string statut
+        datetime echeance
+    }
+
+    ABONNEMENT {
+        string id_abonnement PK
+        string id_utilisateur FK
+        string formule
+        string statut_abonnement
+        datetime debut
+        datetime fin
+    }
+
+    INTENTION_PAIEMENT {
+        string id_intention_paiement PK
+        string id_utilisateur FK
+        float montant
+        string devise
+        string statut_paiement
+        datetime cree_le
+    }
+
+    FACTURE {
+        string id_facture PK
+        string id_intention_paiement FK
+        string reference_externe
+        float montant
+        string statut_facture
+        datetime emise_le
+    }
+
+    UTILISATEUR ||--o{ COMPETENCE : possede
+    UTILISATEUR ||--o{ SESSION : participe
+    UTILISATEUR ||--o{ AVIS : evalue
+    UTILISATEUR ||--o{ ADHESION_GROUPE : rejoint
+    UTILISATEUR ||--o{ ABONNEMENT : souscrit
+    UTILISATEUR ||--o{ INTENTION_PAIEMENT : initie
+
+    SESSION ||--o{ MESSAGE : contient
+    SESSION ||--o{ AVIS : genere
+
+    GROUPE ||--o{ ADHESION_GROUPE : gere
+    GROUPE ||--o{ TACHE : planifie
+
+    ABONNEMENT ||--o{ FACTURE : justifie
+    INTENTION_PAIEMENT ||--o{ FACTURE : produit
+```
 ## Modèle Physique de Données (Physical Data Model)
 
 La représentation physique détaille où et comment chaque entité est stockée, ainsi que les index optimisant les opérations critiques.
@@ -219,8 +862,46 @@ La représentation physique détaille où et comment chaque entité est stockée
 | IntentionPaiement, Facture | PostgreSQL (primaire + secours) | `id_utilisateur`, `statut` | Transactions financières cohérentes |
 
 ##### Diagramme – Répartition physique et stockage
-<img width="2606" height="1012" alt="image" src="https://github.com/user-attachments/assets/fd50e636-1059-4594-a0ac-cfd1de4104e7" />
+```mermaid
+flowchart TB
+	subgraph MongoDBAtlas[MongoDB Atlas – Réplicat + Sharding]
+		Utilisateur[(Collection UTILISATEUR)]
+		Competence[(Collection COMPETENCE)]
+		Session[(Collection SESSION)]
+		Message[(Collection MESSAGE)]
+		Avis[(Collection AVIS)]
+		Groupe[(Collection GROUPE)]
+		Adhesion[(Collection ADHESION_GROUPE)]
+		Tache[(Collection TACHE)]
+		Abonnement[(Collection ABONNEMENT)]
+	end
 
+	subgraph ServicesTempsReel[Redis + Socket.io]
+		FluxChat[[Canal pub/sub CHAT]]
+	end
+
+	subgraph PostgreSQLCluster[PostgreSQL – Primaire & Secours]
+		Intention[(Table INTENTION_PAIEMENT)]
+		Facture[(Table FACTURE)]
+		DroitAcces[(Table DROIT_ACCES)]
+	end
+
+	subgraph StockageObjet[S3 / GCS]
+		MediaBucket[[Bucket MEDIA]]
+	end
+
+	Utilisateur --> Competence
+	Utilisateur --> Session
+	Session --> Message
+	Session --> Avis
+	Groupe --> Adhesion
+	Groupe --> Tache
+	Abonnement --> DroitAcces
+	Intention --> Facture
+	Session --> FluxChat
+	MediaBucket -.-> Session
+	MediaBucket -.-> Utilisateur
+```
 | JournalNotification | MongoDB | `(id_utilisateur, envoye_le)` + TTL | Traçabilité et purge automatique |
 | Média | S3 + métadonnées MongoDB | `(id_utilisateur, cree_le)` | Stockage des fichiers volumineux |
 
@@ -357,8 +1038,48 @@ La représentation physique détaille où et comment chaque entité est stockée
 - read preference `primary` temps réel, `secondary` pour reporting.
 
 ##### Diagramme – Topologie MongoDB en mode actif–actif
-<img width="2058" height="1108" alt="image" src="https://github.com/user-attachments/assets/f2d2a6c3-e47f-4e0a-b95a-029e892d8b48" />
+```mermaid
+flowchart TB
+	subgraph Client
+		App
+	end
+	subgraph Routing
+		Mongos1
+		Mongos2
+	end
+	subgraph Config[Config Servers]
+		CS1
+		CS2
+		CS3
+	end
+	subgraph ShardA[Shard A]
+		APrimary((Primary))
+		ASecond1((Secondary))
+		ASecond2((Secondary))
+	end
+	subgraph ShardB[Shard B]
+		BPrimary((Primary))
+		BSecond1((Secondary))
+		BSecond2((Secondary))
+	end
 
+	App --> Mongos1
+	App --> Mongos2
+	Mongos1 --> APrimary
+	Mongos1 --> BPrimary
+	Mongos2 --> APrimary
+	Mongos2 --> BPrimary
+	Mongos1 --- CS1
+	Mongos1 --- CS2
+	Mongos1 --- CS3
+	Mongos2 --- CS1
+	Mongos2 --- CS2
+	Mongos2 --- CS3
+	APrimary --> ASecond1
+	APrimary --> ASecond2
+	BPrimary --> BSecond1
+	BPrimary --> BSecond2
+```
 
 #### Paiements PostgreSQL — Actif–Passif (primaire + standby synchrone + DR)
 
@@ -374,16 +1095,52 @@ La représentation physique détaille où et comment chaque entité est stockée
 Ces trois rôles fonctionnent ensemble : le primary sert le trafic normal, le standby synchrone prend le relais automatiquement si le primary devient indisponible, tandis que le nœud de DR assure une copie de secours à froid pour restaurer le service même en cas de catastrophe géographique.
 
 ##### Diagramme – Topologie PostgreSQL en mode actif–passif
-<img width="2572" height="978" alt="image" src="https://github.com/user-attachments/assets/22fb9f55-01c4-44b2-aed2-d864d9193dfd" />
-
+```mermaid
+flowchart LR
+	App --> Proxy[HAProxy/pgbouncer]
+	Proxy --> PrimaryPG[(PostgreSQL Primary)]
+	PrimaryPG ==>|sync| SyncStandby[(Standby synchrone)]
+	PrimaryPG -.->|async| DRStandby[(Standby DR asynchrone)]
+	PrimaryPG -.-> WALArchive[WAL Archive / Backups]
+```
 
 ### 5. Haute disponibilité & gestion des pannes
 
-- **MongoDB :** élections automatiques <15 s, reroutage `mongos`, réplication cross-AZ, sharding limitant l’impact à un shard ; tests de bascule réguliers.  
-- **PostgreSQL :** Patroni (outil qui surveille et promeut automatiquement la réplique synchrone), RPO≈0 local (aucune perte de données car chaque écriture est confirmée des deux côtés), plan DR régional (copie de secours dans une autre région), runbooks de bascule (checklists pour changer de serveur sans stress) et procédures PITR (restauration à un instant précis grâce aux journaux).  
-- **Backups :** snapshots quotidiens + PITR (MongoDB Ops Manager/Atlas, WAL PostgreSQL).  
-- **Monitoring :** alertes sur latence, replication lag, élections, erreurs WAL, saturation storage.  
-- **Security/Compliance :** chiffrement au repos (KMS), audits, rotation clés, tests DR.
+#### 5.1 Stratégies de haute disponibilité
+
+- **MongoDB (domaine social) :**
+	- Replica sets sur chaque shard avec répartition cross-AZ et élections automatiques <15 s ;
+	- `mongos` redondants derrière un DNS round-robin et un health-check Kubernetes/VM pour rerouter instantanément le trafic ;
+	- Sharding fonctionnel (`users+skills`, `sessions+messages`, `groups+gamification`) afin de limiter l’impact d’un incident à une partie du domaine métier ;
+	- Politique `writeConcern` différenciée (majority pour données critiques, `w:1` pour chat) pour équilibrer disponibilité et latence ;
+	- Tests trimestriels de failover automatique et exercices de bascule manuelle documentés.
+- **PostgreSQL (paiements) :**
+	- Couple primaire + standby synchrone via Patroni et HAProxy/pgbouncer pour un basculement <2 min ;
+	- Réplique DR asynchrone hors région couplée à l’archivage WAL (S3) afin de garantir un RPO ≤ 15 min en scénario catastrophe ;
+	- Partitionnement logique par période pour isoler les charges de reporting et conserver des performances constantes ;
+	- Maintenance préventive (vacuum, auto-analyse, patching de sécurité) planifiée par fenêtre de maintenance et contrôlée par scripts Ansible.
+- **Couche transverse :**
+	- Sauvegardes incrémentales quotidiennes + full hebdomadaire, validées par restaurations test ;
+	- Supervision Prometheus/Grafana avec alertes PagerDuty sur latence, `replication_lag`, saturation disque et erreurs WAL ;
+	- Secrets et certificats gérés via Vault/KMS avec rotation automatique et alertes d’expiration ;
+	- Plans de capacité (auto-scaling horizontal + alertes d’anticipation) afin d’éviter la saturation d’un shard.
+
+#### 5.2 Gestion des défaillances de nœud
+
+**MongoDB :**
+1. Détection : Prometheus et l’agent Ops Manager déclenchent une alerte lorsque le heartbeat d’un nœud tombe à zéro ou que le temps de réponse dépasse 2 s.  
+2. Isolement : le nœud est marqué `down` par le replica set ; `mongos` cesse de router les requêtes vers lui.  
+3. Continuité : une élection élit un nouveau primary en <15 s ; les clients configurés en `retryable writes` rejouent les écritures interrompues.  
+4. Remédiation : runbook SRE → diagnostic (logs, métriques), redémarrage contrôlé, puis réintégration du nœud via `rs.add()` et resynchronisation initiale.  
+5. Post-mortem : analyse des causes, mise à jour du runbook et ticket Jira pour toute action long terme.
+
+**PostgreSQL :**
+1. Détection : Patroni observe le heartbeat ; en cas de perte, il déclenche immédiatement le mécanisme de failover.  
+2. Promotion : la réplique synchrone est promue primary, HAProxy/pgbouncer bascule ses connexions, et un verrouillage applicatif léger s’assure qu’aucune écriture n’est perdue.  
+3. Notification : une alerte PagerDuty et un message Slack informent l’équipe ; les dashboards Grafana passent en mode incident.  
+4. Restauration : l’ancien primary est soit réintégré en standby (rebuild via `pg_basebackup`), soit isolé pour analyse ; si l’incident est régional, la réplique DR est promue manuellement après validation.  
+5. Vérifications : exécution d’un plan de smoke tests applicatifs, contrôle de l’intégrité via checksums et exécution d’un mini-inventaire de transactions.  
+6. Documentation : création d’un rapport de panne, mise à jour des runbooks et planification des actions correctives (patch, dimensionnement, optimisation réseau).
 
 ### 6. Rapport technique (résumé)
 
@@ -396,7 +1153,24 @@ Ces trois rôles fonctionnent ensemble : le primary sert le trafic normal, le st
 ### 7. Schémas de distribution & reprise
 
 ##### Diagramme – Chaîne d’écriture et de réplication
-<img width="2686" height="832" alt="image" src="https://github.com/user-attachments/assets/661dadca-1e9d-46c9-b83d-a2024918cecb" />
+```mermaid
+sequenceDiagram
+	participant Utilisateur
+	participant API
+	participant FragmentMongoA as Fragment Mongo A
+	participant FragmentMongoB as Fragment Mongo B
+	participant PGPrimaire as PostgreSQL primaire
+	participant PGSynchro as Standby synchrone
+	participant PGSecours as Réplique DR
 
+	Utilisateur->>API: Crée une session et un paiement
+	API->>FragmentMongoA: Enregistre la session (écriture confirmée par plusieurs nœuds)
+	API->>FragmentMongoB: Ajoute le message (validation rapide sur le nœud principal)
+	API->>PGPrimaire: Crée l’intention de paiement (écriture synchrone)
+	PGPrimaire-->>PGSynchro: Copie immédiate du journal WAL
+	PGPrimaire-->>PGSecours: Copie différée du journal WAL
+	FragmentMongoA-->>FragmentMongoA: Réplication vers les serveurs secondaires
+	FragmentMongoB-->>FragmentMongoB: Réplication vers les serveurs secondaires
+```
 
 ---
