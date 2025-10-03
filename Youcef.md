@@ -115,34 +115,56 @@ erDiagram
 #### Diagramme – Cas d'utilisation global
 
 ```mermaid
-usecaseDiagram
-	actor Apprenant
-	actor Enseignant
-	actor "Mentor IA" as MentorIA
-	actor Administrateur
-	actor "Partenaire Paiement" as PartenairePaiement
+flowchart TB
+	actorApprenant((Apprenant))
+	actorEnseignant((Enseignant))
+	actorMentorIA((Mentor IA))
+	actorAdmin((Administrateur))
+	actorPaiement((Partenaire Paiement))
 
-	Apprenant --> (Explorer catalogue de compétences)
-	Apprenant --> (Demander une session)
-	Apprenant --> (Discuter via chat)
-	Apprenant --> (Évaluer une session)
-	Apprenant --> (Gérer abonnement)
+	ucCatalogue((Explorer le catalogue de compétences))
+	ucSessionDemande((Demander une session))
+	ucChat((Discuter via le chat))
+	ucEvaluation((Évaluer une session))
+	ucAbonnement((Gérer son abonnement))
 
-	Enseignant --> (Publier ses compétences)
-	Enseignant --> (Accepter une session)
-	Enseignant --> (Envoyer ressources)
-	Enseignant --> (Recevoir feedback)
+	ucPublier((Publier ses compétences))
+	ucAccepter((Accepter une session))
+	ucRessources((Envoyer des ressources))
+	ucFeedback((Recevoir du feedback))
 
-	MentorIA --> (Recommander parcours)
-	MentorIA --> (Analyser progression)
-	MentorIA --> (Proposer activités)
+	ucReco((Recommander des parcours))
+	ucAnalyse((Analyser la progression))
+	ucActivites((Proposer des activités))
 
-	Administrateur --> (Modérer plateforme)
-	Administrateur --> (Gérer signalements)
-	Administrateur --> (Superviser indicateurs)
+	ucModeration((Modérer la plateforme))
+	ucSignalements((Gérer les signalements))
+	ucIndicateurs((Superviser les indicateurs))
 
-	PartenairePaiement --> (Traiter paiements)
-	PartenairePaiement --> (Notifier statuts)
+	ucPaiement((Traiter les paiements))
+	ucStatut((Notifier les statuts de paiement))
+
+	actorApprenant --> ucCatalogue
+	actorApprenant --> ucSessionDemande
+	actorApprenant --> ucChat
+	actorApprenant --> ucEvaluation
+	actorApprenant --> ucAbonnement
+
+	actorEnseignant --> ucPublier
+	actorEnseignant --> ucAccepter
+	actorEnseignant --> ucRessources
+	actorEnseignant --> ucFeedback
+
+	actorMentorIA --> ucReco
+	actorMentorIA --> ucAnalyse
+	actorMentorIA --> ucActivites
+
+	actorAdmin --> ucModeration
+	actorAdmin --> ucSignalements
+	actorAdmin --> ucIndicateurs
+
+	actorPaiement --> ucPaiement
+	actorPaiement --> ucStatut
 ```
 
 ##### Acteurs principaux et responsabilités
@@ -156,61 +178,93 @@ usecaseDiagram
 ##### Diagramme – Cas d'utilisation Apprenant
 
 ```mermaid
-usecaseDiagram
-	actor Apprenant
+flowchart TB
+	actorApprenant((Apprenant))
 
-	Apprenant --> (Créer/mettre à jour son profil)
-	Apprenant --> (Explorer les compétences disponibles)
-	Apprenant --> (Filtrer par langue/niveau)
-	Apprenant --> (Contacter un enseignant)
-	Apprenant --> (Planifier une session)
-	Apprenant --> (Participer à une session)
-	Apprenant --> (Donner un avis détaillé)
-	Apprenant --> (Suivre son parcours recommandé)
-	Apprenant --> (Gérer son abonnement)
+	ucProfil((Créer ou mettre à jour son profil))
+	ucExplorer((Explorer les compétences disponibles))
+	ucFiltrer((Filtrer par langue ou niveau))
+	ucContacter((Contacter un enseignant))
+	ucPlanifier((Planifier une session))
+	ucParticiper((Participer à une session))
+	ucAvis((Donner un avis détaillé))
+	ucParcours((Suivre un parcours recommandé))
+	ucGestionAbonnement((Gérer son abonnement))
+
+	actorApprenant --> ucProfil
+	actorApprenant --> ucExplorer
+	actorApprenant --> ucFiltrer
+	actorApprenant --> ucContacter
+	actorApprenant --> ucPlanifier
+	actorApprenant --> ucParticiper
+	actorApprenant --> ucAvis
+	actorApprenant --> ucParcours
+	actorApprenant --> ucGestionAbonnement
 ```
 
 ##### Diagramme – Cas d'utilisation Enseignant
 
 ```mermaid
-usecaseDiagram
-	actor Enseignant
+flowchart TB
+	actorEnseignant((Enseignant))
 
-	Enseignant --> (Créer son profil enseignant)
-	Enseignant --> (Publier ses compétences)
-	Enseignant --> (Définir ses disponibilités)
-	Enseignant --> (Répondre aux demandes)
-	Enseignant --> (Animer une session)
-	Enseignant --> (Partager des ressources)
-	Enseignant --> (Consulter ses évaluations)
-	Enseignant --> (Optimiser sa réputation)
+	ucProfilEns((Créer son profil enseignant))
+	ucPublierEns((Publier ses compétences))
+	ucDisponibilites((Définir ses disponibilités))
+	ucRepondre((Répondre aux demandes))
+	ucAnimer((Animer une session))
+	ucPartager((Partager des ressources))
+	ucEvalEns((Consulter ses évaluations))
+	ucReputation((Optimiser sa réputation))
+
+	actorEnseignant --> ucProfilEns
+	actorEnseignant --> ucPublierEns
+	actorEnseignant --> ucDisponibilites
+	actorEnseignant --> ucRepondre
+	actorEnseignant --> ucAnimer
+	actorEnseignant --> ucPartager
+	actorEnseignant --> ucEvalEns
+	actorEnseignant --> ucReputation
 ```
 
 ##### Diagramme – Cas d'utilisation Mentor IA
 
 ```mermaid
-usecaseDiagram
-	actor "Mentor IA" as MentorIA
+flowchart TB
+	actorMentorIA((Mentor IA))
 
-	MentorIA --> (Analyser les objectifs de l'apprenant)
-	MentorIA --> (Concevoir un parcours personnalisé)
-	MentorIA --> (Envoyer des rappels intelligents)
-	MentorIA --> (Synthétiser les progrès)
-	MentorIA --> (Suggérer des ressources complémentaires)
+	ucAnalyserObjectifs((Analyser les objectifs de l'apprenant))
+	ucParcoursIA((Concevoir un parcours personnalisé))
+	ucRappels((Envoyer des rappels intelligents))
+	ucSynthese((Synthétiser les progrès))
+	ucRessources((Suggérer des ressources complémentaires))
+
+	actorMentorIA --> ucAnalyserObjectifs
+	actorMentorIA --> ucParcoursIA
+	actorMentorIA --> ucRappels
+	actorMentorIA --> ucSynthese
+	actorMentorIA --> ucRessources
 ```
 
 ##### Diagramme – Cas d'utilisation Administrateur
 
 ```mermaid
-usecaseDiagram
-	actor Administrateur
+flowchart TB
+	actorAdmin((Administrateur))
 
-	Administrateur --> (Superviser les signalements)
-	Administrateur --> (Valider les certifications)
-	Administrateur --> (Gérer les rôles et accès)
-	Administrateur --> (Analyser la qualité du service)
-	Administrateur --> (Déclencher des actions de modération)
-	Administrateur --> (Piloter les campagnes de notifications)
+	ucSuperviser((Superviser les signalements))
+	ucValider((Valider les certifications))
+	ucRoles((Gérer les rôles et accès))
+	ucQualite((Analyser la qualité de service))
+	ucModeration((Déclencher des actions de modération))
+	ucCampagnes((Piloter les campagnes de notifications))
+
+	actorAdmin --> ucSuperviser
+	actorAdmin --> ucValider
+	actorAdmin --> ucRoles
+	actorAdmin --> ucQualite
+	actorAdmin --> ucModeration
+	actorAdmin --> ucCampagnes
 ```
 
 ##### Diagramme – Classe globale de l'application
